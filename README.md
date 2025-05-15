@@ -1,4 +1,4 @@
-# Supplementary R Codes for  
+Supplementary R Codes for  
 **Midolo *et al.* (2025)**  
 *Six decades of losses and gains in alpha diversity of European plant communities*
 
