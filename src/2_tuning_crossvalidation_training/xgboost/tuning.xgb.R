@@ -102,8 +102,6 @@ print(Sys.time()-st)
 tune_res %>%
   write_rds('./data/models/XGB.tune_res.rds')
 
-# tune_res <- read_rds('./data/models/XGB.tune_res_2024-08-09.rds')  
-
 # Visualize tuning result
 autoplot(tune_res) + theme_bw()
 

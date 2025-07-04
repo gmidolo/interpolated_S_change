@@ -27,7 +27,7 @@ source('./src/utils.R')
 set.seed(123)
 dat_split <- 
   bind_rows(
-    read_csv('./data/input/EVA.csv', show_col_types = F), # Load EVA data
+    read_csv('./data/input/EVA.csv.gz', show_col_types = F), # Load EVA data
     format_ReSurveyEurope(training_strategy = 'random')[['traintest_data']]  # Load ReSurveyEU (static, using one random point in the survey)
   ) %>%
   ## select variables for modeling
@@ -73,12 +73,12 @@ wflow
 
 # Get CV folds 
 set.seed(124) 
-cv_random_folds <- vfold_cv(dat_train, v = 10, repeats = 3, strata = S) # This time we repeat 3 times CV
+cv_random_folds <- vfold_cv(dat_train, v = 10, repeats = 3, strata = S)
 
 # Perform CV
 set.seed(125)
 st = Sys.time()
-cl <- makePSOCKcluster(5)
+cl <- makePSOCKcluster(10)
 registerDoParallel(cl)
 cv_res <- wflow %>%
   fit_resamples(
