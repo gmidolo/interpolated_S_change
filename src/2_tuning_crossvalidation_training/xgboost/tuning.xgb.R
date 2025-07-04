@@ -1,5 +1,12 @@
-#--- TUNING XGBOOST ---#
+################################################################################
+# Author: Gabriele Midolo
+# Email: midolo@fzp.czu.cz
+# Date: 04.07.2025
+################################################################################
 
+# Description: Extreme Gradient Boosting model tuning 
+
+################################################################################
 
 #### 1. Prepare data ####
 
@@ -19,7 +26,7 @@ source('./src/utils.R')
 set.seed(123)
 dat_split <- 
   bind_rows(
-    read_csv('./data/input/EVA.csv', show_col_types = F), # Load EVA data
+    read_csv('./data/input/EVA.csv.gz', show_col_types = F), # Load EVA data
     format_ReSurveyEurope(training_strategy = 'random')[['traintest_data']]  # Load ReSurveyEU (static, using one random point in the survey)
   ) %>%
   ## select variables for modeling
@@ -77,7 +84,7 @@ gather(grd_tune) %>%
   facet_wrap(~key, scales = 'free') +
   theme_bw()
 
-# Perform race tuning
+# Perform tuning
 set.seed(456)
 st = Sys.time()
 cl <- makePSOCKcluster(5)
@@ -86,7 +93,7 @@ tune_res <- tune_grid(
   object = wflow,
   resamples = cv_random_folds,
   grid = grd_tune,
-  # control = control_grid(verbose = T), # This is ignored when running in parallel
+  # control = control_grid(verbose = T),
   metrics = metric_set(rmse, rsq)
 )
 print(Sys.time()-st)

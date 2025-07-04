@@ -1,4 +1,12 @@
-#--- CV XGBOOST ---#
+################################################################################
+# Author: Gabriele Midolo
+# Email: midolo@fzp.czu.cz
+# Date: 04.07.2025
+################################################################################
+
+# Description: Extreme Gradient Boosting random cross-validation 
+
+################################################################################
 
 
 #### 1. Prepare data ####
@@ -13,7 +21,7 @@ suppressPackageStartupMessages(
 )
 
 # Source function to format Resurvey data
-source('./src/validation/functions_valid.R')
+source('./src/utils.R')
 
 # Prepare data for modeling and split train and test dataset
 set.seed(123)
