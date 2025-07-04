@@ -1,9 +1,14 @@
-#--- DIAGNOSTICS RANDOM FOREST ---#
+################################################################################
+# Author: Gabriele Midolo
+# Email: midolo@fzp.czu.cz
+# Date: 04.07.2025
+################################################################################
 
+# Description: Random Forest diagnostics/evaluation
+
+################################################################################
 
 #### 1. Prepare data ####
-# Set working directory
-#setwd('C:/Users/gabri/OneDrive - CZU v Praze/czu/intrplEU/')
 
 # Load packages
 suppressPackageStartupMessages(
@@ -20,13 +25,13 @@ suppressPackageStartupMessages(
 )
 
 # Source function to format Resurvey data
-source('./src/validation/functions_valid.R')
+source('./src/utils.R')
 
 # Prepare data for modeling and split train and test dataset
 set.seed(123)
 dat_split <- 
   bind_rows(
-    read_csv('./data/input/EVA.csv', show_col_types = F), # Load EVA data
+    read_csv('./data/input/EVA.csv.gz', show_col_types = F), # Load EVA data
     format_ReSurveyEurope(training_strategy = 'random')[['traintest_data']]  # Load ReSurveyEU (static, using one random point in the survey)
   ) %>%
   ## select variables for modeling
@@ -37,17 +42,16 @@ dat_split <-
 # Subset training set
 dat_train <- training(dat_split) 
 
-
 # Load model fit
-m <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.last_fit', full.names = T) %>%
+m <- list.files('./data/models', pattern = 'RF.last_fit', full.names = T) %>%
   read_rds()
 
 # Load CV results
-cv_res <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.cv_res', full.names = T) %>%
+cv_res <- list.files('./data/models', pattern = 'RF.cv_res', full.names = T) %>%
   read_rds()
 
 # Load tuning results
-tune_res <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.tune_res', full.names = T) %>%
+tune_res <- list.files('./data/models', pattern = 'RF.tune_res', full.names = T) %>%
   read_rds()
 
 #### 2. Model evaluation ####
@@ -56,7 +60,7 @@ tune_res <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.tune_res', 
 tune_res_plot <- autoplot(tune_res) +
  theme_bw() +
  ggtitle('Tuning results - Random forest (`ranger`) (trees=1000)')
-ggsave('./fig/diagnostic/RF.tune_res_plot.jpg', tune_res_plot, width = 6, height = 5, dpi=600)
+ggsave('./fig/diagnostic/RF.tune_res_plot.png', tune_res_plot, width = 6, height = 5, dpi=600)
 
 # Show performance metrics obtained on random CV
 collect_metrics(cv_res)
@@ -71,7 +75,7 @@ var_imp <- extract_workflow(m) %>%
   theme_minimal() + 
   ggtitle('Variable importance - Random forest')+
   labs(y = 'Importance (node impurity)')
-ggsave('./fig/diagnostic/RF.var_imp.jpg', var_imp, width = 5, height = 4.5, dpi=600)
+ggsave('./fig/diagnostic/RF.var_imp.png', var_imp, width = 5, height = 4.5, dpi=600)
 
 # Collect predictions
 pred_test <- augment(extract_workflow(m), testing(dat_split))
@@ -97,7 +101,7 @@ pred_test_plot <- pred_test %>% # plot
   geom_abline(lty = 2, color = 'red', lwd=.8, alpha=.8) +
   theme_bw() + theme(legend.position = 'bottom') 
 pred_test_plot
-ggsave('./fig/diagnostic/RF.pred_test_plot.jpg', pred_test_plot, width = 7, height = 5, dpi=600)
+ggsave('./fig/diagnostic/RF.pred_test_plot.png', pred_test_plot, width = 7, height = 5, dpi=600)
 
 
 # Plot residulas
@@ -128,7 +132,7 @@ map_residuals <- ggplot() +
  labs(fill='Mean S residuals')+
  ggtitle('Distribution of RandomForest model residuals (25 km resolution)')
 map_residuals
-ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.jpg', map_residuals, width = 6.5, height = 6, dpi=600)
+ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.png', map_residuals, width = 6.5, height = 6, dpi=600)
 
 #### 3. Partial dependence plots ####
 
@@ -164,7 +168,7 @@ p <- ggplot(pdp_single_dat, aes(x, y, col = Habitat)) +
      theme_bw() +
      theme(axis.title.x = element_blank())
 p
-ggsave('./fig/diagnostic/RF.pdp.jpg', p, width = 7.5, height = 4.5, dpi=600)
+ggsave('./fig/diagnostic/RF.pdp.png', p, width = 7.5, height = 4.5, dpi=600)
 
 # Calculate H stats
 set.seed(234)
@@ -179,7 +183,7 @@ summary(hs)
 hs_p <- plot(hs, fill='#3d3c3c', top_m=7) + 
  theme_bw()
 hs_p
-ggsave('./fig/diagnostic/RF.Hstats.jpg', hs_p, width = 8, height = 4.5, dpi=600)
+ggsave('./fig/diagnostic/RF.Hstats.png', hs_p, width = 8, height = 4.5, dpi=600)
 
 # 2D pdp
 grd <- t(combn(c('x', 'y', 'elev', 'plot_size', 'year'
@@ -214,71 +218,7 @@ pd2d_plt <- ggplot(pd2d_dat, aes(x,y,fill=z)) +
             labs(fill='S')
 pd2d_plt
 
-ggsave('./fig/diagnostic/RF.pdp2d.jpg', pd2d_plt, width = 8, height = 6.75, dpi=600)
+ggsave('./fig/diagnostic/RF.pdp2d.png', pd2d_plt, width = 8, height = 6.75, dpi=600)
 
-
-
-#### 4. Partial dependence plots (using DALEX) ####
-
-# library(DALEX); library(DALEXtra)
-
-# explainer <- explain_tidymodels(
-#   model = extract_workflow(m),
-#   data = select(dat_train, lon:habitat),
-#   y = dat_train$S,
-#   verbose = T
-# )
-
-# # Plot time
-# pdp_time <- model_profile(
-#   explainer,
-#   variables = 'year',
-#   N = NULL,
-#   groups = 'habitat'
-# )
-
-# pdp_time_plot <- as_tibble(pdp_time$agr_profiles) %>%
-#   mutate(`_label_` = str_remove(`_label_`, 'workflow_')) %>%
-#   ggplot(aes(`_x_`, `_yhat_`, color = `_label_`)) +
-#   geom_line(size = 1, alpha = 0.8) +
-#   labs(
-#     x = 'Time (year)',
-#     y = 'Species richness',
-#     color = 'Habitat',
-#     title = 'Partial dependence plot',
-#     subtitle = 'Predictions from Random forest'
-#   ) +
-#   scale_x_continuous(labels = seq(1945, 2022, 15),
-#                      breaks = seq(1945, 2022, 15))+
-#   theme_bw()
-# ggsave('./fig/diagnostic/RF.pdp_time_plot.jpg', pdp_time_plot, width = 5, height = 4.5, dpi=600)
-
-
-# # Plot plot size
-# pdp_plot_size <- model_profile(
-#   explainer,
-#   variables = 'plot_size',
-#   N = NULL,
-#   groups = 'habitat'
-# )
-
-# pdp_plot_size_plot <- as_tibble(pdp_plot_size$agr_profiles) %>%
-#   mutate(`_label_` = str_remove(`_label_`, 'workflow_')) %>%
-#   ggplot(aes(`_x_`, `_yhat_`, color = `_label_`)) +
-#   geom_line(size = 1, alpha = 0.8) +
-#   labs(
-#     x = 'Plot size (square m)',
-#     y = 'Species richness',
-#     color = 'Habitat',
-#     title = 'Partial dependence plot',
-#     subtitle = 'Predictions from Random forest'
-#   ) +
-#   scale_x_continuous(labels = c(1, 100, 250, 500, 750, 1000),
-#                      breaks = c(1, 100, 250, 500, 750, 1000))+
-#   theme_bw()
-# pdp_plot_size_plot
-# ggsave('./fig/diagnostic/RF.pdp_plot_size_plot.jpg', pdp_plot_size_plot, width = 5, height = 4.5, dpi=600)
-
-
-
+# quit
 quit(save='no')
