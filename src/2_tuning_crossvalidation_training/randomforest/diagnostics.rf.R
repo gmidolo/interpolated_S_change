@@ -2,6 +2,8 @@
 
 
 #### 1. Prepare data ####
+# Set working directory
+#setwd('C:/Users/gabri/OneDrive - CZU v Praze/czu/intrplEU/')
 
 # Load packages
 suppressPackageStartupMessages(
@@ -13,6 +15,7 @@ suppressPackageStartupMessages(
     library(hstats)
     library(sf)
     library(terra)
+    library(ncf)
   }
 )
 
@@ -36,15 +39,15 @@ dat_train <- training(dat_split)
 
 
 # Load model fit
-m <- list.files('./data/models', pattern = 'RF.last_fit', full.names = T) %>%
+m <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.last_fit', full.names = T) %>%
   read_rds()
 
 # Load CV results
-cv_res <- list.files('./data/models', pattern = 'RF.cv_res', full.names = T) %>%
+cv_res <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.cv_res', full.names = T) %>%
   read_rds()
 
 # Load tuning results
-tune_res <- list.files('./data/models', pattern = 'RF.tune_res', full.names = T) %>%
+tune_res <- list.files('./data/models/EVA_and_ReSurv', pattern = 'RF.tune_res', full.names = T) %>%
   read_rds()
 
 #### 2. Model evaluation ####
@@ -69,10 +72,14 @@ var_imp <- extract_workflow(m) %>%
   ggtitle('Variable importance - Random forest')+
   labs(y = 'Importance (node impurity)')
 ggsave('./fig/diagnostic/RF.var_imp.jpg', var_imp, width = 5, height = 4.5, dpi=600)
-ggsave('./fig/diagnostic/RF.var_imp.pdf', var_imp, width = 4, height = 3.5)
 
 # Collect predictions
 pred_test <- augment(extract_workflow(m), testing(dat_split))
+pred_test$resid <- (pred_test$S-pred_test$.pred) # model residuals
+yardstick::rsq(pred_test, 'S', '.pred')
+
+# rsq on the training:
+yardstick::rsq(augment(extract_workflow(m), training(dat_split)), 'S', '.pred')
 
 breaks_axes <- seq(0,140,20) # define breaks on the x and y axes
 pred_test_plot <- pred_test %>% # plot
@@ -107,48 +114,21 @@ EU <- './data/spatial/euro+med_map/euro+med.map.shp' %>%
   st_transform(crs = 25832) %>% #reproject
   st_simplify(dTolerance = 1000) # simplify borders  
 
-pred_test$resid <- (pred_test$S-pred_test$.pred) # model residuals
 hist(pred_test$resid)
 
 #rasterize
-map_residuals=list()
-for (h in c('Forest','Grassland','Scrub','Wetland')) {
-  
-  br = c(-Inf,-5,-2.5, -0.5,0.5,2.5, 5, Inf)
-  lb = c('< -5','-5 – -2.5','-2.5 – -0.5','-0.5 – +0.5', '+0.5 – +2.5', '+2.5 – +5', '> +5')
-  
-  df.cols = data.frame(lb, cols=hcl.colors(length(lb), 'Spectral'))
-  
-  pdh <- pred_test %>% filter(habitat==h)
-  contas = pdh %>%
-    summarise(n = paste0('n = ', prettyNum(n(),big.mark=',', scientific=F))) 
-  
-  min5 <- function(x){sum(x)>=5}
-  r0 <- rast(res = 50*1000, extent=ext(EU), crs=crs(EU)) 
-  r.min5 <- rasterize(pdh %>% select(x,y) %>% as.matrix(), r0, values=1, fun=min5)
-  r.min5 <- clamp(r.min5, lower=1, value=FALSE)
-  r <- rasterize(pdh %>% select(x,y) %>% as.matrix(), r0, values=pdh$resid, fun=mean)
-  r <- mask(r, r.min5)
-  newvals.cont = as.vector(values(r))
-  newvals.cat = cut(newvals.cont,
-                    breaks = br, labels = lb)
-  values(r) <- newvals.cat
-  
-  map_residuals[[h]] <- ggplot() +
-    geom_raster(data=as.data.frame(r, xy=T), aes(x,y,fill=mean))+
-    geom_sf(data=EU, fill=NA, color=alpha('black',0.5)) +
-    theme(axis.title=element_blank())+
-    labs(fill='Species richness\nresiduals (mean)') +
-    ggtitle(h)+
-    scale_fill_manual(values=df.cols$cols[df.cols$lb %in% newvals.cat])+
-    geom_text(data=contas, x=-283716.1, y=7629361, aes(label = n), fontface=2, size=4)+
-    theme(title = element_text(face=2, size=12),
-          axis.title = element_blank())
-}
-map_residuals_combined <- cowplot::plot_grid(map_residuals[[1]],map_residuals[[2]],map_residuals[[3]],map_residuals[[4]])
-map_residuals_combined
-ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.jpg', map_residuals_combined, width = 6.5, height = 6, dpi=600)
-ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.pdf', map_residuals_combined, width = 10, height = 6)
+r <- rast(res = 25*1000, extent=ext(EU), crs=crs(EU)) 
+r <- rasterize(pred_test %>% select(x,y) %>% as.matrix(), r, values=pred_test$resid, fun=mean)
+
+map_residuals <- ggplot() +
+ geom_raster(data=as.data.frame(r, xy=T), aes(x,y,fill=mean))+
+ scale_fill_gradient2(low='brown', high='midnightblue', mid='lightyellow') +
+ geom_sf(data=EU, fill=NA, color=alpha('black',0.5)) +
+ theme(axis.title=element_blank())+
+ labs(fill='Mean S residuals')+
+ ggtitle('Distribution of RandomForest model residuals (25 km resolution)')
+map_residuals
+ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.jpg', map_residuals, width = 6.5, height = 6, dpi=600)
 
 #### 3. Partial dependence plots ####
 
@@ -185,14 +165,6 @@ p <- ggplot(pdp_single_dat, aes(x, y, col = Habitat)) +
      theme(axis.title.x = element_blank())
 p
 ggsave('./fig/diagnostic/RF.pdp.jpg', p, width = 7.5, height = 4.5, dpi=600)
-ggsave('./fig/diagnostic/RF.pdp.pdf', p, width = 7.5, height = 4.5)
-
-# data.frame(x=c(0, 1e06, 2e06), y=c(4.5e06, 5.5e06, 6.5e06)) %>%
-#   sf::st_as_sf(coords=c('x','y'), crs=25832) %>%
-#   sf::st_transform('WGS84') %>%
-#   sf::as_Spatial() %>%
-#   as.data.frame() %>%
-#   mutate_all(round, 1)
 
 # Calculate H stats
 set.seed(234)
@@ -208,7 +180,6 @@ hs_p <- plot(hs, fill='#3d3c3c', top_m=7) +
  theme_bw()
 hs_p
 ggsave('./fig/diagnostic/RF.Hstats.jpg', hs_p, width = 8, height = 4.5, dpi=600)
-ggsave('./fig/diagnostic/RF.Hstats.pdf', hs_p, width = 8, height = 4.5)
 
 # 2D pdp
 grd <- t(combn(c('x', 'y', 'elev', 'plot_size', 'year'

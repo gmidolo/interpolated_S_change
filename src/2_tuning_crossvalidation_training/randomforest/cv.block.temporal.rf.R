@@ -4,7 +4,7 @@
 # Date: 04.07.2025
 ################################################################################
 
-# Description: Random Forest random cross-validation 
+# Description: Random Forest temporal-block cross-validation 
 
 ################################################################################
 
@@ -24,21 +24,17 @@ source('./src/utils.R')
 
 # Prepare data for modeling and split train and test dataset
 set.seed(123)
-dat_split <- 
+dat <- 
   bind_rows(
     read_csv('./data/input/EVA.csv.gz', show_col_types = F), # Load EVA data
     format_ReSurveyEurope(training_strategy = 'random')[['traintest_data']]  # Load ReSurveyEU (static, using one random point in the survey)
   ) %>%
   ## select variables for modeling
   select(plot_id, S, x, y, elev, year, plot_size, habitat) %>%
-  ## split the data
-  initial_split(prop = 4/5, strata = S) # We will use 80% of the data for training, 20% for testing
+  ## focus on 1960-2020 for the temporal CV
+  filter(year >=1961 & year <= 2020) 
 
-# Subset training set
-dat_train <- training(dat_split) 
-
-
-#### 2. Random CV ####
+#### 2. Temporal CV ####
 
 # Load results of the tuning procedure
 tune_res <- read_rds('./data/models/RF.tune_res.rds') 
@@ -47,7 +43,7 @@ tune_res <- read_rds('./data/models/RF.tune_res.rds')
 tune_best <- select_best(tune_res, metric = 'rmse')
 
 # Define recipe
-rec <- recipe(S ~ x + y + elev + plot_size + year + habitat, data = dat_train) %>%
+rec <- recipe(S ~ x + y + elev + plot_size + year + habitat, data = dat) %>%
   step_string2factor(habitat, levels = c('Forest', 'Grassland', 'Scrub', 'Wetland'))
 
 # Define model based on tuning results
@@ -67,9 +63,22 @@ wflow <- workflow() %>%
   finalize_workflow(tune_best)
 wflow
 
-# Get CV folds 
-set.seed(124) 
-cv_random_folds <- vfold_cv(dat_train, v = 10, repeats = 3, strata = S) # This time we repeat 3 times CV
+# Define temporal blocks
+dat_folds <- dat %>%
+  mutate(decade_cv = ceiling(year / 10) * 10) %>%
+  mutate(decade_cv = factor(decade_cv, levels = sort(unique(decade_cv))))
+table(dat_folds$decade_cv) # no. of observations available per block
+
+# Get CV folds
+set.seed(124)
+cv_temporal_folds <- group_vfold_cv(dat_folds,
+                                    group = decade_cv, 
+                                    v = length(unique(dat_folds$decade_cv)))
+
+
+cv_temporal_folds$decade_start <- cv_temporal_folds$splits %>%
+  map(~ as.character(unique(assessment(.x)$decade_cv))) %>%
+  unlist() # Define end year of each decade
 
 # Perform CV
 set.seed(125)
@@ -79,7 +88,7 @@ registerDoParallel(cl)
 cv_res <- wflow %>%
   fit_resamples(
     preprocessor = rec,
-    resamples = cv_random_folds,
+    resamples = cv_temporal_folds,
     control = control_resamples(verbose = T),
     metrics = metric_set(rmse, rsq)
   )
@@ -87,12 +96,13 @@ print(Sys.time()-st)
 
 # Export CV raw results
 cv_res %>%
-  write_rds('./data/models/RF.cv_res.rds')
+  write_rds('./data/models/RF.cv.temporal_res.rds')
 
 # Export CV metrics
 cv_res %>%
   collect_metrics(summarize = F) %>%
-  write_csv('./data/models/RF.cv_metrics.csv')
+  left_join(cv_temporal_folds[,2:3], by = 'id') %>% # add decade information
+  write_csv('./data/models/RF.cv.temporal_metrics.csv')
 
 stopCluster(cl)
 stopImplicitCluster()

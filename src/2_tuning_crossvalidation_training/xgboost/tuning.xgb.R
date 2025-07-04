@@ -129,5 +129,5 @@ lfit %>%
 
 
 stopCluster(cl)
-doParallel::stopImplicitCluster()
+stopImplicitCluster()
 quit(save='no')

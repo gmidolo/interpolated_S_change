@@ -100,5 +100,5 @@ cv_res %>%
 
 
 stopCluster(cl)
-doParallel::stopImplicitCluster()
+stopImplicitCluster()
 quit(save='no')
