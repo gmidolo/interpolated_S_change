@@ -4,7 +4,8 @@
 # Date: 04.07.2025
 ################################################################################
 
-# Description: Random Forest diagnostics/evaluation
+# Description: Tuning results, feature importance, model evaluation,
+#              distribution of the residuals, partial dependence plots, H-stats
 
 ################################################################################
 
@@ -15,12 +16,10 @@ suppressPackageStartupMessages(
   {
     library(tidyverse)
     library(tidymodels)
-    library(doParallel)
     library(vip)
     library(hstats)
     library(sf)
     library(terra)
-    library(ncf)
   }
 )
 
@@ -60,7 +59,7 @@ tune_res <- list.files('./data/models', pattern = 'RF.tune_res', full.names = T)
 tune_res_plot <- autoplot(tune_res) +
  theme_bw() +
  ggtitle('Tuning results - Random forest (`ranger`) (trees=1000)')
-ggsave('./fig/diagnostic/RF.tune_res_plot.png', tune_res_plot, width = 6, height = 5, dpi=600)
+ggsave('./fig/diagnostic/RF.tune_res_plot.jpg', tune_res_plot, width = 6, height = 5, dpi=600)
 
 # Show performance metrics obtained on random CV
 collect_metrics(cv_res)
@@ -68,23 +67,22 @@ collect_metrics(cv_res)
 # Show performance metrics evaluated on testing data (RMSE and R-squared)
 collect_metrics(m)
 
-# Display variable importance
+# Display features importance
 var_imp <- extract_workflow(m) %>%
   extract_fit_parsnip() %>%
   vip(geom = 'col') +
   theme_minimal() + 
   ggtitle('Variable importance - Random forest')+
   labs(y = 'Importance (node impurity)')
-ggsave('./fig/diagnostic/RF.var_imp.png', var_imp, width = 5, height = 4.5, dpi=600)
+ggsave('./fig/diagnostic/RF.var_imp.jpg', var_imp, width = 5, height = 4.5, dpi=600)
 
 # Collect predictions
 pred_test <- augment(extract_workflow(m), testing(dat_split))
-pred_test$resid <- (pred_test$S-pred_test$.pred) # model residuals
-yardstick::rsq(pred_test, 'S', '.pred')
 
-# rsq on the training:
-yardstick::rsq(augment(extract_workflow(m), training(dat_split)), 'S', '.pred')
+# Model residuals
+pred_test$resid <- (pred_test$S-pred_test$.pred)
 
+# Plot obs. vs. predicted
 breaks_axes <- seq(0,140,20) # define breaks on the x and y axes
 pred_test_plot <- pred_test %>% # plot
   ggplot(aes(S, .pred)) +
@@ -97,33 +95,22 @@ pred_test_plot <- pred_test %>% # plot
        fill='N. Plots', 
        title='Observed vs. predicted richness (S) in Random forest', 
        subtitle=paste0('Pearson correlation: ', round(cor(pred_test$.pred,pred_test$S), 2))) +
-  #geom_smooth(col='chartreuse3', fill='#67cd0079', lty = 1, alpha=.1, lwd=.55) +
   geom_abline(lty = 2, color = 'red', lwd=.8, alpha=.8) +
   theme_bw() + theme(legend.position = 'bottom') 
 pred_test_plot
-ggsave('./fig/diagnostic/RF.pred_test_plot.png', pred_test_plot, width = 7, height = 5, dpi=600)
+ggsave('./fig/diagnostic/RF.pred_test_plot.jpg', pred_test_plot, width = 7, height = 5, dpi=600)
 
 
-# Plot residulas
-regions.name <- c('Albania', 'Austria', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 'Bulgaria',
-                 'Corsica', 'Crete', 'Croatia', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany',
-                 'Greece', 'Hungary', 'Ireland', 'Italy', 'Kosovo', 'Latvia', 'Liechtenstein',
-                 'Lithuania', 'Luxembourg', 'Malta', 'Moldova', 'Montenegro', 'Netherlands', 'North Macedonia',
-                 'Norway', 'Poland', 'Portugal', 'Romania', 'Sardinia', 'Serbia', 'Sicily',
-                 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Ukraine', 'United Kingdom')
+# 3. Geographic maps of model residuals ####
 
-EU <- './data/spatial/euro+med_map/euro+med.map.shp' %>%
-  read_sf %>%
-  semi_join(data.frame(name = regions.name), by = 'name') %>% #include only the needed regions
-  st_transform(crs = 25832) %>% #reproject
-  st_simplify(dTolerance = 1000) # simplify borders  
+# load EU map
+EU <- read_rds('./data/spatial/EU_shape_map.rds')
 
-hist(pred_test$resid)
-
-#rasterize
+# get raster
 r <- rast(res = 25*1000, extent=ext(EU), crs=crs(EU)) 
 r <- rasterize(pred_test %>% select(x,y) %>% as.matrix(), r, values=pred_test$resid, fun=mean)
 
+#plot
 map_residuals <- ggplot() +
  geom_raster(data=as.data.frame(r, xy=T), aes(x,y,fill=mean))+
  scale_fill_gradient2(low='brown', high='midnightblue', mid='lightyellow') +
@@ -132,9 +119,9 @@ map_residuals <- ggplot() +
  labs(fill='Mean S residuals')+
  ggtitle('Distribution of RandomForest model residuals (25 km resolution)')
 map_residuals
-ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.png', map_residuals, width = 6.5, height = 6, dpi=600)
+ggsave('./fig/diagnostic/RF.map_distribution_of_residuals.jpg', map_residuals, width = 6.5, height = 6, dpi=600)
 
-#### 3. Partial dependence plots ####
+#### 4. Partial dependence plots ####
 
 # Extract model workflow
 mwf <- extract_workflow(m)
@@ -168,9 +155,9 @@ p <- ggplot(pdp_single_dat, aes(x, y, col = Habitat)) +
      theme_bw() +
      theme(axis.title.x = element_blank())
 p
-ggsave('./fig/diagnostic/RF.pdp.png', p, width = 7.5, height = 4.5, dpi=600)
+ggsave('./fig/diagnostic/RF.pdp.jpg', p, width = 7.5, height = 4.5, dpi=600)
 
-# Calculate H stats
+# Calculate H stats (interactions of features)
 set.seed(234)
 system.time(
   hs <- hstats(mwf, 
@@ -183,7 +170,7 @@ summary(hs)
 hs_p <- plot(hs, fill='#3d3c3c', top_m=7) + 
  theme_bw()
 hs_p
-ggsave('./fig/diagnostic/RF.Hstats.png', hs_p, width = 8, height = 4.5, dpi=600)
+ggsave('./fig/diagnostic/RF.Hstats.jpg', hs_p, width = 8, height = 4.5, dpi=600)
 
 # 2D pdp
 grd <- t(combn(c('x', 'y', 'elev', 'plot_size', 'year'
@@ -218,7 +205,7 @@ pd2d_plt <- ggplot(pd2d_dat, aes(x,y,fill=z)) +
             labs(fill='S')
 pd2d_plt
 
-ggsave('./fig/diagnostic/RF.pdp2d.png', pd2d_plt, width = 8, height = 6.75, dpi=600)
+ggsave('./fig/diagnostic/RF.pdp2d.jpg', pd2d_plt, width = 8, height = 6.75, dpi=600)
 
 # quit
 quit(save='no')
