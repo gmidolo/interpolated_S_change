@@ -5,7 +5,7 @@
 ################################################################################
 
 # Description: Summarise interpolation stats using raw (all trees) predictions 
-#              across main habitat types (Figure 2)
+#              across main habitat types
 
 ################################################################################
 
