@@ -4,7 +4,8 @@
 # Date: 05.07.2025
 ################################################################################
 
-# Description: Interpolation (predicting S along time, calculate S change)
+# Description: Interpolation across plots (predicting S along time, 
+              # calculate S change)
 
 ################################################################################
 
