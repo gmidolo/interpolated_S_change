@@ -33,25 +33,25 @@ prop.table(table(dat$S_perc.change_1960.2020 >= 20))[2]*100 # fraction of plots 
 prop.table(table(dat$S_perc.change_1960.2020 <= -20))[2]*100 # fraction of plots losing -20% or more
 
 # Summary stats for forests
-dat_hi=dat %>% filter(habitat == 'Forest')
+dat_hi <- dat %>% filter(habitat == 'Forest')
 prop.table(table(dat_hi$S_perc.change_1960.2020 >= 20))[2]*100 # fraction of plots gaining 20% or more in forests
 prop.table(table(dat_hi$S_perc.change_1960.2020 <= -20))[2]*100 # fraction of plots losing -20% or more in forests
 mean(dat_hi$S_perc.change_1960.2020) # fraction of plots losing -20% or more
 
 # Summary stats for grasslands
-dat_hi=dat %>% filter(habitat == 'Grassland')
+dat_hi <- dat %>% filter(habitat == 'Grassland')
 prop.table(table(dat_hi$S_perc.change_1960.2020 >= 20))[2]*100 # fraction of plots gaining 20% or more in grasslands
 prop.table(table(dat_hi$S_perc.change_1960.2020 <= -20))[2]*100 # fraction of plots losing -20% or more in grasslands
 mean(dat_hi$S_perc.change_1960.2020) # fraction of plots losing -20% or more
 
 # Summary stats for scrub
-dat_hi=dat %>% filter(habitat == 'Scrub')
+dat_hi <- dat %>% filter(habitat == 'Scrub')
 prop.table(table(dat_hi$S_perc.change_1960.2020 >= 20))[2]*100 # fraction of plots gaining 20% or more in scrubs
 prop.table(table(dat_hi$S_perc.change_1960.2020 <= -20))[2]*100 # fraction of plots losing -20% or more in scrubs
 mean(dat_hi$S_perc.change_1960.2020) # fraction of plots losing -20% or more
 
 # Summary stats for wetlands
-dat_hi=dat %>% filter(habitat == 'Wetland')
+dat_hi <- dat %>% filter(habitat == 'Wetland')
 prop.table(table(dat_hi$S_perc.change_1960.2020 >= 20))[2]*100 # fraction of plots gaining 20% or more in wetlands
 prop.table(table(dat_hi$S_perc.change_1960.2020 <= -20))[2]*100 # fraction of plots losing -20% or more in wetlands
 mean(dat_hi$S_perc.change_1960.2020) # fraction of plots losing -20% or more
@@ -69,8 +69,8 @@ hist_total <- dat %>%
   geom_histogram(bins = 22, fill='grey', color='grey20') +
   scale_y_continuous(labels = scales::unit_format(unit = 'k', scale = 1e-3))+
   theme_bw()+
-  geom_vline(aes(xintercept=mean(S_perc.change_1960.2020)), color="red", linetype=1, linewidth=1, alpha=.7) +
-  geom_vline(aes(xintercept=0), color="black", linetype=2, linewidth=.5) +
+  geom_vline(aes(xintercept=mean(S_perc.change_1960.2020)), color='red', linetype=1, linewidth=1, alpha=.7) +
+  geom_vline(aes(xintercept=0), color='black', linetype=2, linewidth=.5) +
   scale_x_continuous(breaks = c(-150,-100,-50,-10,10,50,100,150), limits = c(-100,190)) +
   theme(panel.grid.minor = element_blank())+
   labs(x=expression('Species richness change (%)'*'100*'*'(('*S[2020]-S[1960]*')'/S[1960]*')'), y='No. plots')+
