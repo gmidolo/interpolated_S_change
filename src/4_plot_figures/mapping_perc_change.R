@@ -168,16 +168,17 @@ for (h in c('Forest', 'Grassland', 'Scrub', 'Wetland')) {
     
   }
 }
-
+# 
 # # Export histograms
 # for (h in names(hists)) {
 # 
 #   ggsave(
 #     paste0('./fig/S_trends/hist_', h, '.svg'),
-#     cowplot::plot_grid(hists[[h]][[1]], hists[[h]][[2]], hists[[h]][[3]], hists[[h]][[4]], labels = c('1960.1980', '1980.2000', '1980.2000', '2000.2020')),
+#     cowplot::plot_grid(hists[[h]][[1]], hists[[h]][[2]], hists[[h]][[3]], hists[[h]][[4]], 
+#                        labels = c('1960.1980', '1980.2000', '2000.2020', '1960.2020')),
 #     width = 5 * 0.9,
 #     height = 4 * 0.9
 #   )
-#   
+# 
 # }
 
