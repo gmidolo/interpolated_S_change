@@ -91,8 +91,8 @@ dat_cntrd <- dat %>%
   group_by(habitat, biogeo, no.plots) %>%
   mutate(
     m = mean-mean_1960,
-    lpi = m + (quantile0.05 - median), # lower prediction interval quantile
-    upi = m + (quantile0.95 - median), # upper prediction interval quantile
+    lpi = m + (quantile0.05 - median), # lower prediction interval - quantile
+    upi = m + (quantile0.95 - median), # upper prediction interval - quantile
     lci = m + (lower_ci_95 - mean), # lower confidence interval of the mean
     uci = m + (upper_ci_95 - mean) # upper confidence interval of the mean
   ) %>%
