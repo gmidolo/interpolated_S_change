@@ -34,7 +34,6 @@ p <- d %>%
         name = 'Distance [km]'
   ) +
   theme_bw()
-p
 
 # Export in the 'fig/diagnostic' folder
 ggsave('./fig/diagnostic/correlogram.jpg', p, width = 5, height = 4)
