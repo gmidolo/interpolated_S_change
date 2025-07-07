@@ -4,7 +4,7 @@ This table describes the columns found in `EVA.csv.gz` and `ReSurveyEU_clean.csv
 
 | Column Name | Description |
 | :---------- | :----------------------------------------------------------------- |
-| `database` | Database (`EVA or `ReSurveyEU`) |
+| `database` | Database (`EVA` or `ReSurveyEU`) |
 | `resurv_id` | Unique identifier for Resurvey plot |
 | `plot_id` | Unique identifier for plot observation |
 | `ReSur_site` | Identifier for resurvey site (original values from ReSurveyEurope database) |
