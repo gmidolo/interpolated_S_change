@@ -6,6 +6,8 @@ This repository (<https://github.com/gmidolo/interpolated_S_change>) contains th
 
 We interpolated spatiotemporal changes in vascular plant species richness using a new method based on machine learning that does not require temporal replication at sites. Using 698,692 one-time survey vegetation plots from the [European Vegetation Archive](https://euroveg.org/eva-database/), we estimated trends in vascular plant alpha diversity across Europe and validated our approach against 22,852 independent time series from [ReSurveyEurope](https://euroveg.org/resurvey/). 
 
+NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. A copy of this repository including additional data necessary for reproducing our analyses is stored on Zenodo (DOI: [10.5281/zenodo.15836616](https://doi.org/10.5281/zenodo.15836616)). 
+
 #### Authors:
 **Gabriele Midolo** <a href="https://orcid.org/0000-0003-1316-2546" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
 Adam Thomas Clark <a href="https://orcid.org/0000-0002-8843-3278" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
@@ -48,9 +50,9 @@ Petr Keil <a href="https://orcid.org/0000-0003-3017-1858" target="_blank"><img s
 * [Contacts](#contacts)
 * [Data (data folder)](#data-data-folder)
     * [Raw Data Sources (not deposited)](#raw-data-sources-not-deposited)
-    * [Preprocessed input data - input](#preprocessed-input-data---input)
-    * [Model results - models (Not Deposited Here)](#model-results---models-not-deposited-here)
-    * [Model predictions - data/preds](#model-predictions---data-preds)
+    * [Preprocessed input data](#preprocessed-input-data---input)
+    * [Model results](#model-results---models-not-deposited-here)
+    * [Model predictions](#model-predictions---data-preds)
     * [Spatial - data/spatial](#spatial---data-spatial)
 * [R Code (src folder)](#r-code-src-folder)
     * [1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible)](#1-preprocessing-raw-eva-and-resurveyeeurope-data-not-reproducible---1_data_cleaning)
@@ -80,11 +82,9 @@ Email: midolo@fzp.czu.cz
 
 ## Data ([`data`](data) folder)
 
-NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. You can find the complete data and all fitted models, necessary for reproducing our analyses, on Zenodo: <ADD_ZENODO_LINK>. Please download the `data` folder from there to get started.
-
 ### Raw Data Sources (*not deposited*)
 
-The primary data sources used in this project (see [DOI: 10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>).
+The primary data sources used in this project (DOI: [10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>).
 The R code to preprocess and clean EVA and ReSurveyEurope data is available in [`src/1_data_cleaning`](src/1_data_cleaning).
 
 ### Preprocessed input data - [`input`](data/input)
@@ -124,10 +124,10 @@ EVA/ReSurveyEurope data description:
 ### Model results - [`models`](data/models) (*Not Deposited Here*)
 
 The folder contains model results and objects (last fit, tuning results, and cross validation results).
-Files are deposited in the Zenodo repository: <ADD_ZENODO_LINK>.
+Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](https://doi.org/10.5281/zenodo.15836616)).
 
 | File | Method | Description |
-| :---------- | :---------- | :----------------------------------------------------------------- |
+| :---------- | :---------- | :--------------------------------------------------- |
 | `RF.tune_res.rds` | Random Forests | Tuning results; output from `tune::tune_grid()` |
 | `XGB.tune_res.rds` | XGBoost | Tuning results; output from `tune::tune_grid()` |
 | `RF.last_fit.rds` | Random Forests | Final fitted model object; output from `tune::last_fit()` |
@@ -141,14 +141,14 @@ Files are deposited in the Zenodo repository: <ADD_ZENODO_LINK>.
 
 ### Model predictions - [`data/preds`](data/preds)
 
-- Plot-level predictions for species richness (*S*) values in each year from 1960 to 2020, and calculated Δ*S* using various metrics and across different time periods (`preds_stdpltsz.rf.csv` file; *not deposited here*: see Zenodo repository)
+- Plot-level predictions for species richness (*S*) values in each year from 1960 to 2020, and calculated Δ*S* using various metrics and across different time periods (`preds_stdpltsz.rf.csv` file; *not deposited here*: see the [Zenodo repository](https://doi.org/10.5281/zenodo.15836616))
 - Summary stats ([`preds/pdp`](data/preds/pdp)) to plot partial dependence curves (S change over time)
 
 ### Spatial - [`data/spatial`](data/spatial)
 
 - [`EU_shape_map.rds`](data/spatial/EU_shape_map.rds): .rds object containing study area / [Euro+Med](https://europlusmed.org/) regions; requires `sf` R package
 - [`biogeoregions.rds`](data/spatial/biogeoregions.rds): .rds object containing European biogeographic regions; modified from [eea.europa.eu](https://www.eea.europa.eu/en/analysis/maps-and-charts/biogeographical-regions-in-europe-2); requires `sf` R package
-- Output data of spatial and temporal distance effects, and data for spatial correlograms (*not deposited here*: see Zenodo repository)
+- Output data of spatial and temporal distance effects, and data for spatial correlograms (*not deposited here*: see the [Zenodo repository](https://doi.org/10.5281/zenodo.15836616))
 
 ## R Code ([`src`](src) folder)
 
