@@ -46,15 +46,39 @@ Email: midolo@fzp.czu.cz
 
 ---
 
+## Table of Contents
+
+* [Contacts](#contacts)
+* [Data ([`data`](data) folder)](#data-data-folder)
+    * [Raw Data Sources (*not deposited*)](#raw-data-sources-not-deposited)
+    * [Preprocessed input data - [`input`](data/input)](#preprocessed-input-data---inputdatainput)
+    * [Model results - [`models`](data/models) (*Not Deposited Here*)](#model-results---modelsdatamodels-not-deposited-here)
+    * [Model predictions - [`data/preds`](data/preds)](#model-predictions---datapredsdatapreds)
+    * [Spatial - [`data/spatial`](data/spatial)](#spatial---dataspatialdataspatial)
+* [R Code ([`src`](src) folder)](#r-code-src-folder)
+    * [1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`1_data_cleaning`](src/1_data_cleaning)](#1-preprocessing-raw-eva-and-resurveyeeurope-data-not-reproducible---1_data_cleaningsrc1_data_cleaning)
+    * [2. Tuning, training, testing Random Forests and XGBoost - [`2_model_training_testing`](src/2_model_training_testing)](#2-tuning-training-testing-random-forests-and-xgboost---2_model_training_testingsrc2_model_training_testing)
+    * [3. Validation using time series data - [`3_validation`](src/3_validation)](#3-validation-using-time-series-data---3_validationsrc3_validation)
+    * [4. Interpolation (predict Random Forests over time) - [`4_interpolation`](src/4_interpolation)](#4-interpolation-predict-random-forests-over-time---4_interpolationsrc4_interpolation)
+    * [5. Spatial and temporal distance effects - [`5_distance_error_dependency`](src/5_distance_error_dependency)](#5-spatial-and-temporal-distance-effects---5_distance_error_dependencysrc5_distance_error_dependency)
+    * [6. Plot main figures - [`6_plot_figures`](src/6_plot_figures)](#6-plot-main-figures---6_plot_figuressrc6_plot_figures)
+    * [Utility Functions](#utility-functions)
+* [Figures ([`fig`](fig) folder)](#figures-fig-folder)
+* [License](#license)
+* [Citation](#citation)
+
+---
+
 This repository (<https://github.com/gmidolo/interpolated_S_change>) contains the **data** and **R code** for our study, allowing for the reproduction of the main analyses and supplementary materials.
 
 ## Data ([`data`](data) folder)
 
-NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. The [`input`](data/input) data are available here, but you can find the complete data and all fitted models, necessary for reproducing our analyses, on Zenodo: <ADD_ZENODO_LINK>. Please download the `data` folder from there to get started.
+NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. You can find the complete data and all fitted models, necessary for reproducing our analyses, on Zenodo: <ADD_ZENODO_LINK>. Please download the `data` folder from there to get started.
 
 ### Raw Data Sources (*not deposited*)
 
-The primary data sources used in this project (see [DOI: 10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>). The R code to preprocess and clean EVA and ReSurveyEurope data is available in [`src/1_data_cleaning`](src/1_data_cleaning).
+The primary data sources used in this project (see [DOI: 10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>).
+The R code to preprocess and clean EVA and ReSurveyEurope data is available in [`src/1_data_cleaning`](src/1_data_cleaning).
 
 ### Preprocessed input data - [`input`](data/input)
 
