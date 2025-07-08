@@ -123,7 +123,21 @@ EVA/ReSurveyEurope data description:
 
 ### Model results - [`models`](data/models) (*Not Deposited Here*)
 
-The folder contains model results and objects (last fit, tuning results, and cross validation results). Files are deposited in the Zenodo repository: <ADD_ZENODO_LINK>
+The folder contains model results and objects (last fit, tuning results, and cross validation results).
+Files are deposited in the Zenodo repository: <ADD_ZENODO_LINK>.
+
+| File | Method | Description |
+| :---------- | :---------- | :----------------------------------------------------------------- |
+| `RF.tune_res.rds` | Random Forests | Tuning results; output from `tune::tune_grid()` |
+| `XGB.tune_res.rds` | XGBoost | Tuning results; output from `tune::tune_grid()` |
+| `RF.last_fit.rds` | Random Forests | Final fitted model object; output from `tune::last_fit()` |
+| `XGB.last_fit.rds` | XGBoost | Final fitted model object; output from `tune::last_fit()` |
+| `RF.cv_res.rds` | Random Forests | Cross-validation results from random CV; output from `tune::fit_resamples()` |
+| `RF.cv_metrics.csv` | Random Forests | Summary stats from random CV; output from `tune::collect_metrics(summarize=FALSE)` |
+| `XGB.cv_res.rds` | XGBoost | Cross-validation results from random CV; output from `tune::fit_resamples()` |
+| `XGB.cv_metrics.csv` | XGBoost | Summary stats from random CV; output from `tune::collect_metrics(summarize=FALSE)` |
+| `RF.cv.temporal_res.rds` | Random Forests | Cross-validation results from temporal-block CV; output from `tune::fit_resamples()` |
+| `RF.cv.temporal_metrics.csv` | Random Forests | Summary stats from temporal-block CV; output from `tune::collect_metrics(summarize=FALSE)` |
 
 ### Model predictions - [`data/preds`](data/preds)
 
