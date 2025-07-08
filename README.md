@@ -7,6 +7,7 @@ This repository (<https://github.com/gmidolo/interpolated_S_change>) contains th
 We interpolated spatiotemporal changes in vascular plant species richness using a new method based on machine learning that does not require temporal replication at sites. Using 698,692 one-time survey vegetation plots from the [European Vegetation Archive](https://euroveg.org/eva-database/), we estimated trends in vascular plant alpha diversity across Europe and validated our approach against 22,852 independent time series from [ReSurveyEurope](https://euroveg.org/resurvey/). 
 
 ####Authors
+
 **Gabriele Midolo** <a href="https://orcid.org/0000-0003-1316-2546" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
 Adam Thomas Clark <a href="https://orcid.org/0000-0002-8843-3278" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
 Milan Chytrý <a href="https://orcid.org/0000-0002-8122-3075" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
