@@ -1,4 +1,6 @@
-# Data and R code for *Six decades of losses and gains in alpha diversity of European plant communities*
+# Six decades of losses and gains in alpha diversity of European plant communities
+
+## Data and R code repository
 
 **Gabriele Midolo** <a href="https://orcid.org/0000-0003-1316-2546" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
 Adam Thomas Clark <a href="https://orcid.org/0000-0002-8843-3278" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
@@ -36,21 +38,30 @@ Petr Keil <a href="https://orcid.org/0000-0003-3017-1858" target="_blank"><img s
 
 ---
 
-This repository (<https://github.com/gmidolo/interpolated_S_change>) contains the **data** and **R code** for our study, allowing for the reproduction of the main analyses and supplementary materials. Due to their substantial size, some outputs (model files and site-level predictions) are not directly included here. The full stable repository is available on Zenodo: <ADD_ZENODO_LINK>.
+### Contacts:
+**Gabriele Midolo** Department of Spatial Sciences, Faculty of Environmental Sciences  
+Czech University of Life Sciences Prague, Praha-Suchdol, Czech Republic  
+ORCID: [0000-0003-1316-2546](https://orcid.org/0000-0003-1316-2546)  
+Email: midolo@fzp.czu.cz
 
-## Data ([`data`](src) folder)
+---
 
-### Raw Data Sources (*Not Deposited Here*)
+This repository (<https://github.com/gmidolo/interpolated_S_change>) contains the **data** and **R code** for our study, allowing for the reproduction of the main analyses and supplementary materials.
 
-The primary data sources used in this project (see <https://doi.org/10.58060/250x-we61>), including species list recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>).
-The R code to preprocess and clean EVA and ReSurveyEurope data is available in [`src/1_data_cleaning`](src/1_data_cleaning).
+## Data ([`data`](data) folder)
+
+NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. The [`input`](data/input) data are available here, but you can find the complete data and all fitted models, necessary for reproducing our analyses, on Zenodo: <ADD_ZENODO_LINK>. Please download the `data` folder from there to get started.
+
+### Raw Data Sources (*not deposited*)
+
+The primary data sources used in this project (see [DOI: 10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>). The R code to preprocess and clean EVA and ReSurveyEurope data is available in [`src/1_data_cleaning`](src/1_data_cleaning).
 
 ### Preprocessed input data - [`input`](data/input)
 
 The folder contains cleaned and processed input data files used for the analyses:
 
--   [`./input/EVA.csv.gz`](data/input): A .gz-compressed CSV file containing selected vegetation plots from the EVA database.
--   [`./input/ReSurveyEU_clean.csv.gz`](data/input): A .gz-compressed CSV file with selected plots from the ReSurveyEurope dataset.
+- [`input/EVA.csv.gz`](data/input/EVA.csv.gz): A .gz-compressed CSV file containing selected vegetation plots from the EVA database.
+- [`input/ReSurveyEU_clean.csv.gz`](data/input/ReSurveyEU_clean.csv.gz): A .gz-compressed CSV file with selected plots from the ReSurveyEurope dataset.
 
 EVA/ReSurveyEurope data description:
 
@@ -83,12 +94,12 @@ EVA/ReSurveyEurope data description:
 
 The folder contains model results and objects (last fit, tuning results, and cross validation results). Files are deposited in the Zenodo repository: <ADD_ZENODO_LINK>
 
-### Model predictions - [`data/preds`](data/preds) 
+### Model predictions - [`data/preds`](data/preds)
 
 - Plot-level predictions for species richness (*S*) values in each year from 1960 to 2020, and calculated Δ*S* using various metrics and across different time periods (`preds_stdpltsz.rf.csv` file; *not deposited here*: see Zenodo repository)
 - Summary stats ([`preds/pdp`](data/preds/pdp)) to plot partial dependence curves (S change over time)
 
-### Spatial - [`data/spatial`](data/spatial) 
+### Spatial - [`data/spatial`](data/spatial)
 
 - [`EU_shape_map.rds`](data/spatial/EU_shape_map.rds): .rds object containing study area / [Euro+Med](https://europlusmed.org/) regions; requires `sf` R package
 - [`biogeoregions.rds`](data/spatial/biogeoregions.rds): .rds object containing European biogeographic regions; modified from [eea.europa.eu](https://www.eea.europa.eu/en/analysis/maps-and-charts/biogeographical-regions-in-europe-2); requires `sf` R package
@@ -98,7 +109,7 @@ The folder contains model results and objects (last fit, tuning results, and cro
 
 ### 1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`1_data_cleaning`](src/1_data_cleaning)
 
-- [`1.prepare.data.R`](src/1_data_cleaning/1.prepare.data.R): Step 1. Main script to preprocess raw data retrieved in EVA/ReSurveyEurope proj. no. 222 (<https://doi.org/10.58060/250x-we61>)
+- [`1.prepare.data.R`](src/1_data_cleaning/1.prepare.data.R): Step 1. Main script to preprocess raw data retrieved in EVA/ReSurveyEurope proj. no. 222 (see [DOI: 10.58060/250x-we61](https://doi.org/10.58060/250x-we61))
 - [`2.duplicate.search.R`](src/1_data_cleaning/2.duplicate.search.R): Step 2. Remove presumed or actual duplicate plots within and across EVA and ReSurveyEurope data (plots with the same year of sampling, geographic coordinates, and species composition)
 - [`3.clean.ReSurveyEU.R`](src/1_data_cleaning/3.clean.ReSurveyEU.R): Step 3. Remove plots in ReSurveyEurope with 'uncertain' plots location (= large distance between observations of the same plots)
 
@@ -107,8 +118,8 @@ The folder contains model results and objects (last fit, tuning results, and cro
 #### Random Forests [`randomforest`](src/2_model_training_testing/randomforest)
 - [`tuning.rf.R`](src/2_model_training_testing/randomforest/tuning.rf.R): Train and tune Random Forests model
 - [`cv.rf.R`](src/2_model_training_testing/randomforest/cv.rf.R): Random cross validation for the Random Forests model
-- [`cv.block.temporal.rf.R`](src/2_model_training_testing/cv.block.temporal.rf.R): Temporal-block cross validation for the Random Forests model
-- [`diagnostics.rf.R`](src/2_model_training_testing/diagnostics.rf.R): Evaluate and interpret Random Forests model performance, feature importance, spatial residuals distribution, and feature interactions
+- [`cv.block.temporal.rf.R`](src/2_model_training_testing/randomforest/cv.block.temporal.rf.R): Temporal-block cross validation for the Random Forests model
+- [`diagnostics.rf.R`](src/2_model_training_testing/randomforest/diagnostics.rf.R): Evaluate and interpret Random Forests model performance, feature importance, spatial residuals distribution, and feature interactions
 
 #### XGBoost [`xgboost`](src/2_model_training_testing/xgboost)
 - [`tuning.xgb.R`](src/2_model_training_testing/xgboost/tuning.xgb.R): Train and tune XGBoost model
@@ -116,9 +127,9 @@ The folder contains model results and objects (last fit, tuning results, and cro
 
 ### 3. Validation using time series data - [`3_validation`](src/3_validation)
 
-- [`run_validation_all_tests.R`](src/3_validation/run_validation_all_tests.R): Perform various validation tests assessing model performance over different testing data 
+- [`run_validation_all_tests.R`](src/3_validation/run_validation_all_tests.R): Perform various validation tests assessing model performance over different testing data
 - [`plot_validation.R`](src/3_validation/plot_validation.R): Plot results of various validation tests
-- [`run_validation_ReSurveyEurope_repeats.R`](src/3_validation/run_validation_all_tests.R): Validate model approach using ReSurveyEurope data (repeat random sampling of plos 100 times)
+- [`run_validation_ReSurveyEurope_repeats.R`](src/3_validation/run_validation_ReSurveyEurope_repeats.R): Validate model approach using ReSurveyEurope data (repeat random sampling of plots 100 times)
 
 ### 4. Interpolation (predict Random Forests over time) - [`4_interpolation`](src/4_interpolation)
 
@@ -144,7 +155,7 @@ The folder contains model results and objects (last fit, tuning results, and cro
 - [`plot_trends_raw_predictions_biogeoregions.R`](src/6_plot_figures/plot_trends_raw_predictions_biogeoregions.R): Interpolated *S* response to time for each habitat type and biogeographic region (Figure 3 of the main manuscript)
 - [`mapping_perc_change.R`](src/6_plot_figures/mapping_perc_change.R): Distribution maps of interpolated Δ*S* (%) for each habitat and time period (Figure 4 of the main manuscript)
 
-### Help functions 
+### Utility Functions
 
 - [`utils.R`](src/utils.R): Custom functions used to load static ReSurveyEurpe data and run model validations
 
@@ -162,13 +173,3 @@ Contains figures presented in the main manuscript and supporting information.
 ## Citation
 
 *This repository is not linked to any publication yet.*
-
----
-## Author contacts
-**Gabriele Midolo**  
-Department of Spatial Sciences  
-Faculty of Environmental Sciences  
-Czech University of Life Sciences Prague, Praha-Suchdol, Czech Republic  
-ORCID: [0000-0003-1316-2546](https://orcid.org/0000-0003-1316-2546)  
-Email 1: `gabriele.midolo [at] gmail [dot] com`
-Email 2: `midolo [at] fzp.czu [dot] cz`
