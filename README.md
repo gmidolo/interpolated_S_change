@@ -38,34 +38,38 @@ Petr Keil <a href="https://orcid.org/0000-0003-3017-1858" target="_blank"><img s
 
 ---
 
+## Table of Contents
+
+* [Contacts](#contacts)
+* [Data (data folder)](#data-data-folder)
+    * [Raw Data Sources (not deposited)](#raw-data-sources-not-deposited)
+    * [Preprocessed input data - input](#preprocessed-input-data---input)
+    * [Model results - models (Not Deposited Here)](#model-results---models-not-deposited-here)
+    * [Model predictions - data/preds](#model-predictions---data-preds)
+    * [Spatial - data/spatial](#spatial---data-spatial)
+* [R Code (src folder)](#r-code-src-folder)
+    * [1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - 1_data_cleaning](#1-preprocessing-raw-eva-and-resurveyeeurope-data-not-reproducible---1_data_cleaning)
+    * [2. Tuning, training, testing Random Forests and XGBoost - 2_model_training_testing](#2-tuning-training-testing-random-forests-and-xgboost---2_model_training_testing)
+        * [Random Forests](#random-forests)
+        * [XGBoost](#xgboost)
+    * [3. Validation using time series data - 3_validation](#3-validation-using-time-series-data---3_validation)
+    * [4. Interpolation (predict Random Forests over time) - 4_interpolation](#4-interpolation-predict-random-forests-over-time---4_interpolation)
+    * [5. Spatial and temporal distance effects - 5_distance_error_dependency](#5-spatial-and-temporal-distance-effects---5_distance_error_dependency)
+        * [Model performance response to spatial and temporal distance to the training data](#model-performance-response-to-spatial-and-temporal-distance-to-the-training-data)
+        * [Residuals spatial autocorrelation](#residuals-spatial-autocorrelation)
+    * [6. Plot main figures - 6_plot_figures](#6-plot-main-figures---6_plot_figures)
+    * [Utility Functions](#utility-functions)
+* [Figures (fig folder)](#figures-fig-folder)
+* [License](#license)
+* [Citation](#citation)
+
+---
+
 ### Contacts:
 **Gabriele Midolo** Department of Spatial Sciences, Faculty of Environmental Sciences  
 Czech University of Life Sciences Prague, Praha-Suchdol, Czech Republic  
 ORCID: [0000-0003-1316-2546](https://orcid.org/0000-0003-1316-2546)  
 Email: midolo@fzp.czu.cz
-
----
-
-## Table of Contents
-
-* [Contacts](#contacts)
-* [Data ([`data`](data) folder)](#data-data-folder)
-    * [Raw Data Sources (*not deposited*)](#raw-data-sources-not-deposited)
-    * [Preprocessed input data - [`input`](data/input)](#preprocessed-input-data---inputdatainput)
-    * [Model results - [`models`](data/models) (*Not Deposited Here*)](#model-results---modelsdatamodels-not-deposited-here)
-    * [Model predictions - [`data/preds`](data/preds)](#model-predictions---datapredsdatapreds)
-    * [Spatial - [`data/spatial`](data/spatial)](#spatial---dataspatialdataspatial)
-* [R Code ([`src`](src) folder)](#r-code-src-folder)
-    * [1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`1_data_cleaning`](src/1_data_cleaning)](#1-preprocessing-raw-eva-and-resurveyeeurope-data-not-reproducible---1_data_cleaningsrc1_data_cleaning)
-    * [2. Tuning, training, testing Random Forests and XGBoost - [`2_model_training_testing`](src/2_model_training_testing)](#2-tuning-training-testing-random-forests-and-xgboost---2_model_training_testingsrc2_model_training_testing)
-    * [3. Validation using time series data - [`3_validation`](src/3_validation)](#3-validation-using-time-series-data---3_validationsrc3_validation)
-    * [4. Interpolation (predict Random Forests over time) - [`4_interpolation`](src/4_interpolation)](#4-interpolation-predict-random-forests-over-time---4_interpolationsrc4_interpolation)
-    * [5. Spatial and temporal distance effects - [`5_distance_error_dependency`](src/5_distance_error_dependency)](#5-spatial-and-temporal-distance-effects---5_distance_error_dependencysrc5_distance_error_dependency)
-    * [6. Plot main figures - [`6_plot_figures`](src/6_plot_figures)](#6-plot-main-figures---6_plot_figuressrc6_plot_figures)
-    * [Utility Functions](#utility-functions)
-* [Figures ([`fig`](fig) folder)](#figures-fig-folder)
-* [License](#license)
-* [Citation](#citation)
 
 ---
 
@@ -192,7 +196,7 @@ Contains figures presented in the main manuscript and supporting information.
 
 **Data** are available under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International license (CC BY-NC-ND 4.0) (<https://creativecommons.org/licenses/by-nc-nd/4.0/>).
 
-**Code** is available under the terms of the GNU General Public License v3.0 (GPL-3.0) (<https://www.gnu.org/licenses/gpl-3.0.html>).
+**Code** are available under the terms of the GNU General Public License v3.0 (GPL-3.0) (<https://www.gnu.org/licenses/gpl-3.0.html>).
 
 ## Citation
 
