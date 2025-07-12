@@ -261,7 +261,7 @@ temp_cat_plot <- ggplot(eval_metrics_cat, aes(x = range_cat, y = RMSE)) +
             vjust = -0.5,
             size = 3) +
   labs(
-    subtitle = paste0('Species richness changes in ReSurveyEurope (no. plots = ',scales::comma(nrow(obs_vs_pred)),')'),
+    subtitle = paste0('* species richness changes in ReSurveyEurope (no. plots = ', scales::comma(nrow(obs_vs_pred)),')'),
     title = 'Temporal distance effects on model residuals*',
     x = 'Distance from training data [years]',
     y = expression('RMSE: observed vs. predicted lnRR(' * italic(Delta) *' '* italic(S) * ')'),
