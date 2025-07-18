@@ -199,6 +199,7 @@ Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](htt
 - [`plot_trends_raw_predictions_habitat.R`](src/6_plot_figures/plot_trends_raw_predictions_habitat.R): Interpolated *S* response to time for each habitat type (Figure 2b of the main manuscript)
 - [`plot_trends_raw_predictions_biogeoregions.R`](src/6_plot_figures/plot_trends_raw_predictions_biogeoregions.R): Interpolated *S* response to time for each habitat type and biogeographic region (Figure 3 of the main manuscript)
 - [`mapping_perc_change.R`](src/6_plot_figures/mapping_perc_change.R): Distribution maps of interpolated Δ*S* (%) for each habitat and time period (Figure 4 of the main manuscript)
+- [`mapping_dynamics.R`](src/6_plot_figures/mapping_dynamics.R): Visualize maps of species richness dynamics on a shiny app (workk in progress)
 
 ### Utility Functions
 
