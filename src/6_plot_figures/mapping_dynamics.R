@@ -273,21 +273,21 @@ server <- function(input, output, session) {
       leafletProxy("map") %>% clearMarkers()
     }
     prev_mode(input$mode)
-  }, ignoreNULL = FALSE, ignoreInit = TRUE) # Ignore init to not clear on first load
+  }, ignoreNULL = FALSE, ignoreInit = TRUE)
   
-  # A small addition to handle when habitat changes
+  # clear markers if habitat changes
   observeEvent(input$habitat, {
     leafletProxy("map") %>% clearMarkers()
   })
   
-  # To provide unique layerIds for efficient updates, use unique identifier:
+  # provide unique layerIds for efficient updates, use unique identifier:
   dat_with_id <- reactive({
     dat %>%
-      # Ensure there's a unique ID for each geographic point
+      # force unique ID for each geographic point
       mutate(geometry_id = paste0(x, "_", y, "_", habitat))
   })
   
-  # Update your reactive data calls to use `dat_with_id`
+  # update reactive data calls to use `dat_with_id`
   dat_sf <- reactive({
     dat_with_id() %>%
       st_as_sf(coords = c("x", "y"), crs = 25832) %>%
