@@ -6,7 +6,9 @@ This repository (<https://github.com/gmidolo/interpolated_S_change>) contains th
 
 We interpolated spatiotemporal changes in vascular plant species richness using a new method based on machine learning that does not require temporal replication at sites. Using 698,692 one-time survey vegetation plots from the [European Vegetation Archive](https://euroveg.org/eva-database/), we estimated trends in vascular plant alpha diversity across Europe and validated our approach against 22,852 independent time series from [ReSurveyEurope](https://euroveg.org/resurvey/). 
 
-NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. A copy of this repository including additional data necessary for reproducing our analyses is stored on Zenodo (DOI: [10.5281/zenodo.15836616](https://doi.org/10.5281/zenodo.15836616)). 
+NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. A copy of this repository including additional data necessary for reproducing our analyses is stored on Zenodo (DOI: [10.5281/zenodo.15836616](https://doi.org/10.5281/zenodo.15836616)).
+
+An interactive map exploring interpolated spatiotemporal changes in species richness can be accessed at [gmidolo.shinyapps.io/interpolated_s_change_app](https://gmidolo.shinyapps.io/interpolated_s_change_app/). Its code is deposited in a separate GitHub repository ([gmidolo/interpolated_S_change_app](https://github.com/gmidolo/interpolated_S_change_app)).
 
 #### Authors:
 **Gabriele Midolo** <a href="https://orcid.org/0000-0003-1316-2546" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
@@ -199,7 +201,6 @@ Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](htt
 - [`plot_trends_raw_predictions_habitat.R`](src/6_plot_figures/plot_trends_raw_predictions_habitat.R): Interpolated *S* response to time for each habitat type (Figure 2b of the main manuscript)
 - [`plot_trends_raw_predictions_biogeoregions.R`](src/6_plot_figures/plot_trends_raw_predictions_biogeoregions.R): Interpolated *S* response to time for each habitat type and biogeographic region (Figure 3 of the main manuscript)
 - [`mapping_perc_change.R`](src/6_plot_figures/mapping_perc_change.R): Distribution maps of interpolated Δ*S* (%) for each habitat and time period (Figure 4 of the main manuscript)
-- [`mapping_dynamics.R`](src/6_plot_figures/mapping_dynamics.R): Visualize maps of species richness dynamics on a shiny app
 
 ### Utility Functions
 
