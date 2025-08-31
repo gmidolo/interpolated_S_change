@@ -21,6 +21,7 @@
 suppressPackageStartupMessages({
   library(tidyverse)
   library(tidymodels)
+  library(sf)
 })
 
 # 1. Plot Validation results (all tests) ####
@@ -152,3 +153,80 @@ p_sampling_type <- ggplot(d2p, aes(.obs, .pred)) +
   geom_abline(lty = 2, color = 'red', lwd=.5, alpha=.5) +
   theme_bw()
 ggsave('fig/diagnostic/validation_sampling_type.jpg', p_sampling_type, width = 10, height = 6.5, dpi = 600)
+ 
+# # 4. Map comparisons ####
+# source('./src/utils.R')
+# set.seed(123)
+# dat_ReSurveyEurope <- format_ReSurveyEurope(training_strategy = 'random')
+# dat_ReSurveyEurope <- dat_ReSurveyEurope$traintest_data # get lon-lat to add to the augmented data
+# d2p <- res_preds %>%
+#   filter(.validation == 'External S change') %>%
+#   filter(`Training data` == 'EVA_and_ReSurv')
+# d2p <- cbind(d2p, dat_ReSurveyEurope)
+# 
+# # Load EU shapefile         
+# EU <- './data/spatial/EU_shape_map.rds' %>%
+#   read_rds() %>%
+#   # Further simplify EU shapefile
+#   st_buffer(1000) %>% 
+#   st_simplify(dTolerance = 4000)
+# 
+# # Define base raster where to calculate average S change
+# res_km <- 75 # resolution of the raster in km
+# r <- rast(res = res_km*1000, extent=ext(EU), crs=crs(EU)) 
+# mean_at_least_five_plots <- \(x, th = 5) {ifelse(length(x) >= th, mean(x), NA)}
+# 
+# # Get rasterized (averaged) metrics of change
+# d2rast <- list() # list storing rasters
+# d2plot <- list() # list storing data to plot
+# for (i in c('.obs','.pred')) {
+#   for(h in c('Forest','Grassland','Scrub','Wetland')) {
+#     d_i_h <- d2p[d2p$habitat==h,]
+#     d2rast[[h]][[i]] <- rasterize(d_i_h %>% select(x,y) %>% as.matrix(), r, values = d_i_h[i], fun = mean_at_least_five_plots)
+#     d2plot[[h]][[i]] <- d2rast[[h]][[i]] %>%
+#       as.data.frame(xy=T, na.rm=F) %>%
+#       rownames_to_column('id') %>%
+#       rename(mean = values) %>%
+#       drop_na()
+#   }
+# }
+# d2plot <- d2plot %>% 
+#   map(\(x){bind_rows(x, .id = 'metric')}) %>%
+#   bind_rows(.id='habitat') 
+# 
+# # Add facet labels and cut the mean values of the metric to plot
+# br = c(-10,-0.5, -0.1, -0.05, 0.05, 0.1, 0.5, 10)
+# lb = c('< -0.5','-0.5 – -0.1','-0.1 – -0.05', '-0.05 – 0.05','0.05 – 0.1', '0.1 – 0.5' ,'> 0.5')
+# 
+# nice_labels <- data.frame(metric = c('.obs','.pred'), pretty_metric=c('Observed in ReSurveyEurope', 'Interpolated using EVA data'))
+# d2plot <- d2plot %>% left_join(nice_labels, 'metric') 
+# d2plot <- d2plot %>%
+#   mutate(mean_cat = cut(
+#     mean, 
+#     breaks = br, 
+#     labels = lb))
+# 
+# # Define color palette
+# cols <-  hcl.colors(length(levels(d2plot[1,'mean_cat'])), 'Spectral')
+# 
+# # Define theme for plotting
+# my_theme <- theme(
+#   strip.text = element_text(colour ='black', face=2, size=10),
+#   axis.title=element_blank(),
+#   legend.title = element_text(face=2, size=10),
+#   strip.background = element_blank(), 
+#   strip.placement = 'outside',
+#   legend.position = 'bottom'
+# )
+# 
+# # Plot
+# map <- ggplot() +
+#   geom_sf(data=EU, fill='grey95', color=NA) +
+#   geom_raster(data=d2plot, aes(x,y,fill=mean_cat)) +
+#   facet_grid(pretty_metric~habitat) +
+#   scale_fill_manual(values = cols) +
+#   geom_sf(data=EU %>% st_buffer(1000)%>% st_union(), fill=NA, color=alpha('black',0.5), linewidth=.1) +
+#   labs(fill='S change (lnRR)') +
+#   my_theme 
+# 
+# map
