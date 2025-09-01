@@ -165,7 +165,9 @@ Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](htt
 #### Random Forests [`randomforest`](src/2_model_training_testing/randomforest)
 - [`tuning.rf.R`](src/2_model_training_testing/randomforest/tuning.rf.R): Train and tune Random Forests model
 - [`cv.rf.R`](src/2_model_training_testing/randomforest/cv.rf.R): Random cross validation for the Random Forests model
-- [`cv.block.temporal.rf.R`](src/2_model_training_testing/randomforest/cv.block.temporal.rf.R): Temporal-block cross validation for the Random Forests model
+- [`cv.block.temporal.rf.R`](src/2_model_training_testing/randomforest/cv.block.temporal.rf.R): Temporal block cross validation for Random Forests
+- [`cv.block.spatial.rf.R`](src/2_model_training_testing/randomforest/cv.block.spatial.rf.R): Spatial block cross validation for the Random Forests
+- [`cv.block.spatiotemporal.rf.R`](src/2_model_training_testing/randomforest/cv.block.spatiotemporal.rf.R): Spatio-Temporal block cross validation for Random Forests
 - [`diagnostics.rf.R`](src/2_model_training_testing/randomforest/diagnostics.rf.R): Evaluate and interpret Random Forests model performance, feature importance, spatial residuals distribution, and feature interactions
 
 #### XGBoost [`xgboost`](src/2_model_training_testing/xgboost)

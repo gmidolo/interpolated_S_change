@@ -4,7 +4,7 @@
 # Date: 04.07.2025
 ################################################################################
 
-# Description: Random Forest temporal-block cross-validation 
+# Description: Temporal block cross-validation for Random Forests
 
 ################################################################################
 

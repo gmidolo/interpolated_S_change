@@ -1,0 +1,13 @@
+id,.metric,.estimator,.estimate,.config,decade_start
+Resample1,rmse,standard,9.37198526001881,Preprocessor1_Model1,2020
+Resample1,rsq,standard,0.3882728782566751,Preprocessor1_Model1,2020
+Resample2,rmse,standard,9.532631654239347,Preprocessor1_Model1,2010
+Resample2,rsq,standard,0.45655893102438694,Preprocessor1_Model1,2010
+Resample3,rmse,standard,9.750891118581508,Preprocessor1_Model1,1990
+Resample3,rsq,standard,0.4180818274995609,Preprocessor1_Model1,1990
+Resample4,rmse,standard,10.65666432186075,Preprocessor1_Model1,1970
+Resample4,rsq,standard,0.34527426193414285,Preprocessor1_Model1,1970
+Resample5,rmse,standard,10.058477025535646,Preprocessor1_Model1,1980
+Resample5,rsq,standard,0.3978254402533135,Preprocessor1_Model1,1980
+Resample6,rmse,standard,9.841075324319549,Preprocessor1_Model1,2000
+Resample6,rsq,standard,0.3849938129824634,Preprocessor1_Model1,2000
