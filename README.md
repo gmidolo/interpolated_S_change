@@ -85,7 +85,7 @@ Email: midolo@fzp.czu.cz
 
 ### Raw input data - [`input`](data/input)
 
-The primary data sources used in this project (DOI: [10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository because they are not needed to reproduce these analysis. This data can only be accessed through the [European Vegetation Archive (EVA) Coordinating Board](https://euroveg.org/eva-database/) using the proper data request form (see [`How To Obtain Data`](https://euroveg.org/eva-database/obtaining-data>).
+The EVA and ReSurveyEurope data for this project, including the species lists for each plot, are not stored in this repository. These data are not essential for reproducing our analysis. They can be only obtained by requesting access from the [European Vegetation Archive (EVA) Coordinating Board](https://euroveg.org/eva-database/) using the appropriate data request form (see [`How To Obtain Data`](https://euroveg.org/eva-database/obtaining-data>)). Please reference this project's DOI ([10.58060/250x-we61](https://doi.org/10.58060/250x-we61)) in your request.
 
 The folder contains cleaned and processed input data files used for the analyses:
 - [`input/EVA.csv.gz`](data/input/EVA.csv.gz): A .gz-compressed CSV file containing selected vegetation plots from the EVA database.
