@@ -15,6 +15,7 @@
 suppressPackageStartupMessages({
   library(tidyverse)
   library(sf)
+  library(scales)
 })
 
 # Load plot-level predictions

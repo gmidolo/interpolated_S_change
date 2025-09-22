@@ -159,7 +159,7 @@ run_validation_RF <- \(datatype = c('EVA','ReSurv','EVA_ReSurv'),
   dat <- dat_ReSurveyEurope 
   
   if(datatype == 'EVA') {
-    dat[['traintest_data']] <- read_csv('./data/input/EVA.csv.gz', show_col_types = F) #%>% sample_n(25000)
+    dat[['traintest_data']] <- read_csv('./data/input/EVA.csv.gz', show_col_types = F)
   }
   
   if(datatype == 'EVA_ReSurv') {
@@ -261,7 +261,7 @@ run_validation_RF <- \(datatype = c('EVA','ReSurv','EVA_ReSurv'),
       pivot_wider(names_from = .metric, values_from = .estimate) %>%
       mutate(cor = sqrt(rsq))
     
-    #, lastfit = lfit # save model results? Currently suprressed as fitted models takes quite some space
+    #, lastfit = lfit # save model results? Currently suppressed as fitted models takes quite some space
   )
   
   return(res)

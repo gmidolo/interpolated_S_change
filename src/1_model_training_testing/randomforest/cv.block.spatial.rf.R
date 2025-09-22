@@ -160,7 +160,7 @@ for (i in grid_km_list) {
     )
   
   stopCluster(cl)
-  doParallel::stopImplicitCluster()
+  stopImplicitCluster()
 }
 
 # quit
