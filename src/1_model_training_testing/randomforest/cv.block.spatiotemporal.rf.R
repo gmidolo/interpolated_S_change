@@ -16,6 +16,7 @@ suppressPackageStartupMessages(
     library(tidyverse)
     library(tidymodels)
     library(doParallel)
+    library(GGally)
   }
 )
 
@@ -109,14 +110,14 @@ d2p <- bind_rows(
 pm <- GGally::ggpairs(
   d2p,
   columns = c('Easting', 'Northing', 'Year of sampling'),
-  ggplot2::aes(color = fold_type, alpha = .6),
+ aes(color = fold_type, alpha = .6),
   # only map color
   upper = 'blank',
   legend = 7
 ) +
-  ggplot2::labs(color = 'Dataset') +
-  ggplot2::theme(legend.title = element_text(size = 10)) +
-  ggplot2::scale_alpha(guide = "none") 
+  labs(color = 'Dataset') +
+  theme(legend.title = element_text(size = 10)) +
+  scale_alpha(guide = "none") 
 
 # Export figure
 ggsave(filename = './fig/diagnostic/spatiotemporal_blocking_kmeans_100centers_examplefold.jpg', 
@@ -151,7 +152,7 @@ cv_res_metrics %>%
 
 # stop paralleling
 stopCluster(cl)
-doParallel::stopImplicitCluster()
+stopImplicitCluster()
 
 # quit
 quit(save='no')

@@ -45,32 +45,31 @@ Martin Večeřa <a href="https://orcid.org/0000-0001-8507-791X" target="_blank">
 Denys Vynokurov <a href="https://orcid.org/0000-0001-7003-6680" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>,
 Petr Keil <a href="https://orcid.org/0000-0003-3017-1858" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" class="is-rounded" width="15"/></a>
 
----
 
 ## Table of Contents
 
 * [Contacts](#contacts)
 * [Data (data folder)](#data-data-folder)
-    * [Raw Data Sources (not deposited)](#raw-data-sources-not-deposited)
-    * [Preprocessed input data](#preprocessed-input-data---input)
+    * [Input data](#preprocessed-input-data---input)
     * [Model results](#model-results---models-not-deposited-here)
     * [Model predictions](#model-predictions---data-preds)
     * [Spatial - data/spatial](#spatial---data-spatial)
 * [R Code (src folder)](#r-code-src-folder)
     * [1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible)](#1-preprocessing-raw-eva-and-resurveyeeurope-data-not-reproducible---1_data_cleaning)
-    * [2. Tuning, training, testing Random Forests and XGBoost](#2-tuning-training-testing-random-forests-and-xgboost---2_model_training_testing)
+    * [2. Tuning, training, testing Random Forests and XGBoost](#2-tuning-training-testing-random-forests-and-xgboost---1_model_training_testing)
         * [Random Forests](#random-forests)
         * [XGBoost](#xgboost)
-    * [3. Validation using time series data](#3-validation-using-time-series-data---3_validation)
-    * [4. Interpolation (predict Random Forests over time)](#4-interpolation-predict-random-forests-over-time---4_interpolation)
-    * [5. Spatial and temporal distance effects](#5-spatial-and-temporal-distance-effects---5_distance_error_dependency)
+    * [3. Validation using time series data](#3-validation-using-time-series-data---2_validation)
+    * [4. Interpolation (predict Random Forests over time)](#4-interpolation-predict-random-forests-over-time---3_interpolation)
+    * [5. Spatial and temporal distance effects](#5-spatial-and-temporal-distance-effects---4_distance_error_dependency)
         * [Model performance response to spatial and temporal distance to the training data](#model-performance-response-to-spatial-and-temporal-distance-to-the-training-data)
         * [Residuals spatial autocorrelation](#residuals-spatial-autocorrelation)
-    * [6. Plot main figures](#6-plot-main-figures---6_plot_figures)
+    * [6. Plot main figures](#6-plot-main-figures---5_plot_figures)
     * [Utility Functions](#utility-functions)
 * [Figures (fig folder)](#figures-fig-folder)
 * [License](#license)
 * [Citation](#citation)
+
 
 ---
 
@@ -84,15 +83,11 @@ Email: midolo@fzp.czu.cz
 
 ## Data ([`data`](data) folder)
 
-### Raw Data Sources (*not deposited*)
-
-The primary data sources used in this project (DOI: [10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository but can be accessed through the European Vegetation Archive (EVA) Coordinating Board (see <https://euroveg.org/eva-database/>).
-The R code to preprocess and clean EVA and ReSurveyEurope data is available in [`src/1_data_cleaning`](src/1_data_cleaning).
-
 ### Preprocessed input data - [`input`](data/input)
 
-The folder contains cleaned and processed input data files used for the analyses:
+The primary data sources used in this project (DOI: [10.58060/250x-we61](https://doi.org/10.58060/250x-we61)), including species lists recorded in each plot, are not directly stored in this repository because they are not needed to reproduce these analysis. This data can only be accessed through the [European Vegetation Archive (EVA) Coordinating Board](https://euroveg.org/eva-database/) using the proper data request form (see [`How To Obtain Data`](https://euroveg.org/eva-database/obtaining-data>).
 
+The folder contains cleaned and processed input data files used for the analyses:
 - [`input/EVA.csv.gz`](data/input/EVA.csv.gz): A .gz-compressed CSV file containing selected vegetation plots from the EVA database.
 - [`input/ReSurveyEU_clean.csv.gz`](data/input/ReSurveyEU_clean.csv.gz): A .gz-compressed CSV file with selected plots from the ReSurveyEurope dataset.
 
@@ -143,7 +138,7 @@ Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](htt
 
 ### Model predictions - [`data/preds`](data/preds)
 
-- Plot-level predictions for species richness (*S*) values in each year from 1960 to 2020, and calculated Δ*S* using various metrics and across different time periods (`preds_stdpltsz.rf.csv` file; *not deposited here*: see the [Zenodo repository](https://doi.org/10.5281/zenodo.15836616))
+- Plot-level predictions for species richness (*S*) values in each year from 1960 to 2020, and calculated Δ*S* using various metrics and across different time periods (`preds_stdpltsz.rf.csv` file; *not deposited here due to large size*: see the [Zenodo repository](https://doi.org/10.5281/zenodo.15836616))
 - Summary stats ([`preds/pdp`](data/preds/pdp)) to plot partial dependence curves (S change over time)
 
 ### Spatial - [`data/spatial`](data/spatial)
@@ -154,55 +149,49 @@ Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](htt
 
 ## R Code ([`src`](src) folder)
 
-### 1. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`1_data_cleaning`](src/1_data_cleaning)
+### 1. Tuning, training, testing Random Forests and XGBoost - [`1_model_training_testing`](src/1_model_training_testing)
 
-- [`1.prepare.data.R`](src/1_data_cleaning/1.prepare.data.R): Step 1. Main script to preprocess raw data retrieved in EVA/ReSurveyEurope proj. no. 222 (see [DOI: 10.58060/250x-we61](https://doi.org/10.58060/250x-we61))
-- [`2.duplicate.search.R`](src/1_data_cleaning/2.duplicate.search.R): Step 2. Remove presumed or actual duplicate plots within and across EVA and ReSurveyEurope data (plots with the same year of sampling, geographic coordinates, and species composition)
-- [`3.clean.ReSurveyEU.R`](src/1_data_cleaning/3.clean.ReSurveyEU.R): Step 3. Remove plots in ReSurveyEurope with 'uncertain' plots location (= large distance between observations of the same plots)
+#### Random Forests [`randomforest`](src/1_model_training_testing/randomforest)
+- [`tuning.rf.R`](src/1_model_training_testing/randomforest/tuning.rf.R): Train and tune Random Forests model
+- [`cv.rf.R`](src/1_model_training_testing/randomforest/cv.rf.R): Random cross validation for the Random Forests model
+- [`cv.block.temporal.rf.R`](src/1_model_training_testing/randomforest/cv.block.temporal.rf.R): Temporal block cross validation for Random Forests
+- [`cv.block.spatial.rf.R`](src/1_model_training_testing/randomforest/cv.block.spatial.rf.R): Spatial block cross validation for the Random Forests
+- [`cv.block.spatiotemporal.rf.R`](src/1_model_training_testing/randomforest/cv.block.spatiotemporal.rf.R): Spatio-Temporal block cross validation for Random Forests
+- [`diagnostics.rf.R`](src/1_model_training_testing/randomforest/diagnostics.rf.R): Evaluate and interpret Random Forests model performance, feature importance, spatial residuals distribution, and feature interactions
 
-### 2. Tuning, training, testing Random Forests and XGBoost - [`2_model_training_testing`](src/2_model_training_testing)
+#### XGBoost [`xgboost`](src/1_model_training_testing/xgboost)
+- [`tuning.xgb.R`](src/1_model_training_testing/xgboost/tuning.xgb.R): Train and tune XGBoost model
+- [`cv.xgb.R`](src/1_model_training_testing/xgboost/cv.xgb.R): Random cross validation for the XGBoost model
 
-#### Random Forests [`randomforest`](src/2_model_training_testing/randomforest)
-- [`tuning.rf.R`](src/2_model_training_testing/randomforest/tuning.rf.R): Train and tune Random Forests model
-- [`cv.rf.R`](src/2_model_training_testing/randomforest/cv.rf.R): Random cross validation for the Random Forests model
-- [`cv.block.temporal.rf.R`](src/2_model_training_testing/randomforest/cv.block.temporal.rf.R): Temporal block cross validation for Random Forests
-- [`cv.block.spatial.rf.R`](src/2_model_training_testing/randomforest/cv.block.spatial.rf.R): Spatial block cross validation for the Random Forests
-- [`cv.block.spatiotemporal.rf.R`](src/2_model_training_testing/randomforest/cv.block.spatiotemporal.rf.R): Spatio-Temporal block cross validation for Random Forests
-- [`diagnostics.rf.R`](src/2_model_training_testing/randomforest/diagnostics.rf.R): Evaluate and interpret Random Forests model performance, feature importance, spatial residuals distribution, and feature interactions
+### 2. Validation using time series data - [`2_validation`](src/2_validation)
 
-#### XGBoost [`xgboost`](src/2_model_training_testing/xgboost)
-- [`tuning.xgb.R`](src/2_model_training_testing/xgboost/tuning.xgb.R): Train and tune XGBoost model
-- [`cv.xgb.R`](src/2_model_training_testing/xgboost/cv.xgb.R): Random cross validation for the XGBoost model
+- [`run_validation_all_tests.R`](src/2_validation/run_validation_all_tests.R): Perform various validation tests assessing model performance over different testing data
+- [`plot_validation.R`](src/2_validation/plot_validation.R): Plot results of various validation tests
+- [`run_validation_ReSurveyEurope_repeats.R`](src/2_validation/run_validation_ReSurveyEurope_repeats.R): Validate model approach using ReSurveyEurope data (repeat random sampling of plots 100 times)
 
-### 3. Validation using time series data - [`3_validation`](src/3_validation)
+### 3. Interpolation (predict Random Forests over time) - [`3_interpolation`](src/3_interpolation)
 
-- [`run_validation_all_tests.R`](src/3_validation/run_validation_all_tests.R): Perform various validation tests assessing model performance over different testing data
-- [`plot_validation.R`](src/3_validation/plot_validation.R): Plot results of various validation tests
-- [`run_validation_ReSurveyEurope_repeats.R`](src/3_validation/run_validation_ReSurveyEurope_repeats.R): Validate model approach using ReSurveyEurope data (repeat random sampling of plots 100 times)
+- [`full_ensemble_predictions.R`](src/3_interpolation/full_ensemble_predictions.R): In each plot, predict species richness (*S*) values for each year from 1960 to 2020, and calculate Δ*S* using different metrics
+- [`raw_predictions_habitat.R`](src/3_interpolation/raw_predictions_habitat.R): Calculate summary statistics for *S* (95% CI around the mean, prediction intervals) from 1960 to 2020 for each habitat type
+- [`raw_predictions_biogeo.R`](src/3_interpolation/raw_predictions_biogeo.R): Calculate summary statistics for *S* (95% CI around the mean, prediction intervals) from 1960 to 2020 for each habitat type and biogeographic region
 
-### 4. Interpolation (predict Random Forests over time) - [`4_interpolation`](src/4_interpolation)
-
-- [`full_ensemble_predictions.R`](src/4_interpolation/full_ensemble_predictions.R): In each plot, predict species richness (*S*) values for each year from 1960 to 2020, and calculate Δ*S* using different metrics
-- [`raw_predictions_habitat.R`](src/4_interpolation/raw_predictions_habitat.R): Calculate summary statistics for *S* (95% CI around the mean, prediction intervals) from 1960 to 2020 for each habitat type
-- [`raw_predictions_biogeo.R`](src/4_interpolation/raw_predictions_biogeo.R): Calculate summary statistics for *S* (95% CI around the mean, prediction intervals) from 1960 to 2020 for each habitat type and biogeographic region
-
-### 5. Spatial and temporal distance effects - [`5_distance_error_dependency`](src/5_distance_error_dependency)
+### 4. Spatial and temporal distance effects - [`4_distance_error_dependency`](src/4_distance_error_dependency)
 
 #### Model performance response to spatial and temporal distance to the training data
-- [`spatial_distance_compute.R`](src/5_distance_error_dependency/spatial_distance_compute.R): Calculate spatial distance rasters for test plots relative to training data, and for ReSurveyEurope plots relative to EVA plots
-- [`spatial_distance_EVA_ReSurveyEU.R`](src/5_distance_error_dependency/spatial_distance_EVA_ReSurveyEU.R): Count the number of plots in ReSurveyEurope grouped by spatial distance classes relative to the EVA training data
-- [`spatial_and_temporal_distance_analysis.R`](src/5_distance_error_dependency/spatial_and_temporal_distance_analysis.R): Assess how model performance (root mean squared error, RMSE) varies across different spatial and temporal distance classes
+- [`spatial_distance_compute.R`](src/4_distance_error_dependency/spatial_distance_compute.R): Calculate spatial distance rasters for test plots relative to training data, and for ReSurveyEurope plots relative to EVA plots
+- [`spatial_distance_EVA_ReSurveyEU.R`](src/4_distance_error_dependency/spatial_distance_EVA_ReSurveyEU.R): Count the number of plots in ReSurveyEurope grouped by spatial distance classes relative to the EVA training data
+- [`spatial_and_temporal_distance_analysis.R`](src/4_distance_error_dependency/spatial_and_temporal_distance_analysis.R): Assess how model performance (root mean squared error, RMSE) varies across different spatial and temporal distance classes
 
 #### Residuals spatial autocorrelation
-- [`moran_correlog_compute.R`](src/5_distance_error_dependency/moran_correlog_compute.R): Calculate spatial autocorrelation (Moran's *I*) of model residuals over 250 km grid cells
-- [`moran_correlog_plot.R`](src/5_distance_error_dependency/moran_correlog_plot.R): Plot spatial autocorrelation of model residuals (correlogram)
+- [`moran_correlog_compute.R`](src/4_distance_error_dependency/moran_correlog_compute.R): Calculate spatial autocorrelation (Moran's *I*) of model residuals over 250 km grid cells
+- [`moran_correlog_plot.R`](src/4_distance_error_dependency/moran_correlog_plot.R): Plot spatial autocorrelation of model residuals (correlogram)
 
-### 6. Plot main figures - [`6_plot_figures`](src/6_plot_figures)
+### 5. Plot main figures - [`5_plot_figures`](src/5_plot_figures)
 
-- [`histogram_perc_change.R`](src/6_plot_figures/histogram_perc_change.R): Distribution of interpolated Δ*S* (%) across all plots (Figure 2a of the main manuscript)
-- [`plot_trends_raw_predictions_habitat.R`](src/6_plot_figures/plot_trends_raw_predictions_habitat.R): Interpolated *S* response to time for each habitat type (Figure 2b of the main manuscript)
-- [`plot_trends_raw_predictions_biogeoregions.R`](src/6_plot_figures/plot_trends_raw_predictions_biogeoregions.R): Interpolated *S* response to time for each habitat type and biogeographic region (Figure 3 of the main manuscript)
-- [`mapping_perc_change.R`](src/6_plot_figures/mapping_perc_change.R): Distribution maps of interpolated Δ*S* (%) for each habitat and time period (Figure 4 of the main manuscript)
+- [`histogram_perc_change.R`](src/5_plot_figures/histogram_perc_change.R): Distribution of interpolated Δ*S* (%) across all plots (Figure 2a of the main manuscript)
+- [`plot_trends_raw_predictions_habitat.R`](src/5_plot_figures/plot_trends_raw_predictions_habitat.R): Interpolated *S* response to time for each habitat type (Figure 2b of the main manuscript)
+- [`plot_trends_raw_predictions_biogeoregions.R`](src/5_plot_figures/plot_trends_raw_predictions_biogeoregions.R): Interpolated *S* response to time for each habitat type and biogeographic region (Figure 3 of the main manuscript)
+- [`mapping_perc_change.R`](src/5_plot_figures/mapping_perc_change.R): Distribution maps of interpolated Δ*S* (%) for each habitat and time period (Figure 4 of the main manuscript)
 
 ### Utility Functions
 
