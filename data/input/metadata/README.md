@@ -1,9 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-
 # Metadata for EVA and ReSurveyEurope
 
 **Date:** 2025-10-14\
@@ -17,7 +11,7 @@ output:
 ## 1. General Dataset Information
 
 | **Field** | **Description** |
-|----|----|
+|-------------------------------|-----------------------------------------|
 | **Dataset names** | European Vegetation Archive (EVA); ReSurveyEurope |
 | **Version** | Version 2024-09-19 (DOI: <https://doi.org/10.58060/hgrb-sw46>) |
 | **Project name** | "EVA project \# 222 – 2024-09-12 Interpolated dynamics of local plant diversity in European vegetation - G. Midolo \| SELECTION 2024-10-31" (DOI: <https://doi.org/10.58060/250x-we61>) |
@@ -30,7 +24,7 @@ output:
 ## 2. Dataset Description
 
 |   | **Raw data (\*)** | **Data in the repository** |
-|----|----|----|
+|--------------|-----------------------|------------------------------------|
 | **Summary** | EVA contains vegetation plot data across Europe, including species composition and plot metadata. ReSurveyEurope contains data in a similar format, but for plots with repeated measurements over time. | Subset restricted to plot observations relevant for analyzing temporal changes in vascular plant species richness across Europe. Includes processed and harmonized species and site-level data used for modelling species richness change. |
 | **Provenance** | Compiled from 308 databases contributed by data owners under EVA and ReSurveyEurope governance. | Compiled from 263 databases contributed by data owners under EVA and ReSurveyEurope governance. |
 | **Temporal coverage (range)** | 1873–2023 | 1945–2023 (model training); 1960–2020 (predictions/interpolation) |
@@ -46,7 +40,7 @@ output:
 ## 3. Access and Licensing
 
 |   | **Raw data (\*)** | **Data in the repository** |
-|----|----|----|
+|--------------|-----------------------|------------------------------------|
 | **Access conditions** | Data access follows either free-access, semi-restricted, or restricted models, depending on the availability regime assigned by the database custodians. In any case, **the data are only accessible through a data request to the EVA and ReSurveyEurope Governing Board.** | Data access follows either free-access, semi-restricted, or restricted models, depending on the availability regime assigned by the database custodians. The data stored in this repository can be used to reproduce the main analyses (models, predictions, figures). **Use in other publications requires Governing Board approval.** |
 | **How to obtain access** | Data can be accessed through a request to the Governing Board, following [Article 5 of the EVA rules](https://euroveg.org/download/eva-rules.pdf). More info: <https://euroveg.org/eva-database/obtaining-data> | Through this repository ([`input`](data/input)). To use these data elsewhere, a data request must be submitted to the Governing Board. |
 | **License / Terms of Use** | Depending on the availability regime assigned by the database custodians and EVA/ReSurveyEurope Governing Board. | Derived data follow the same access constraints. Metadata and code in this repository are licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/). |
@@ -59,7 +53,7 @@ output:
 ## 4. Methods and Processing
 
 |   | **Raw data (\*)** | **Data in the repository** |
-|----|----|----|
+|--------------|-----------------------|------------------------------------|
 | **Data collection methods** | Records of the abundance and/or occurrence of plant species found in vegetation plots collected in the field. | Not available (data are elaborated based on the raw data). |
 | **Inclusion / exclusion criteria** | Includes different vegetation types, plot sizes, quality levels, and time periods available in the raw data. Eligibility of databases to be included in EVA and ReSurveyEurope is regulated by the Governing Board. | Vegetation plots with full lists of vascular plant species categorized as forest, grassland, scrub, and wetland, with plot size 1–1000 m², valid geographic coordinates, and sampled between 1945–2023. Detailed selection criteria are in the main manuscript. |
 | **Data harmonization** | Managed by the EVA and ReSurveyEurope curators (species abundances and nomenclature). | Same as raw data. |
