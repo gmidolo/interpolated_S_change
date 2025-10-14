@@ -6,7 +6,7 @@ output:
 # Metadata for EVA and ReSurveyEurope
 
 **Date:** 2025-10-14\
-**Authors/Creators:** Gabriele Midolo, on behalf of the Author Team\
+**Authors:** Gabriele Midolo, on behalf of the Author Team\
 **Contact:** [gabriele.midolo\@gmail.com](#0){.email}\
 **Persistent Identifier (Zenodo):** [10.5281/zenodo.15836616](#0)\
 **Accessed data:** European Vegetation Archive (EVA) and ReSurveyEurope datasets
