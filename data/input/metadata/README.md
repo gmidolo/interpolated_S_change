@@ -10,7 +10,6 @@
 
 ## 1. General Dataset Information
 
-| **Field** | **Description** |
 |-------------------------------|-----------------------------------------|
 | **Dataset names** | European Vegetation Archive (EVA); ReSurveyEurope |
 | **Version** | Version 2024-09-19 (DOI: <https://doi.org/10.58060/hgrb-sw46>) |

@@ -92,6 +92,7 @@ The folder contains input data files used for the analyses:
 
 EVA/ReSurveyEurope data description:
 
+| Column Name | Description |
 | :---------- | :----------------------------------------------------------------- |
 | `database` | Database (`EVA` or `ReSurveyEU`) |
 | `resurv_id` | Unique identifier for Resurvey plot |
