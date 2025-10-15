@@ -6,7 +6,7 @@ This repository (<https://github.com/gmidolo/interpolated_S_change>) contains th
 
 We interpolated spatiotemporal changes in vascular plant species richness using a new method based on machine learning that does not require temporal replication at sites. Using 698,692 one-time survey vegetation plots from the [European Vegetation Archive](https://euroveg.org/eva-database/), we estimated trends in vascular plant alpha diversity across Europe and validated our approach against 22,852 independent time series from [ReSurveyEurope](https://euroveg.org/resurvey/). 
 
-NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. A copy of this repository including additional data necessary for reproducing our analyses is stored on Zenodo (DOI: [10.5281/zenodo.15836616](https://doi.org/10.5281/zenodo.15836616)).
+NOTE: We have excluded some large outputs (model files and site-level predictions) from this repository to keep its size manageable. A copy of this repository including additional data necessary for reproducing our analyses is stored on Zenodo (DOI: [10.5281/zenodo.17357776](https://doi.org/10.5281/zenodo.17357776)).
 
 An interactive map exploring interpolated spatiotemporal changes in species richness can be accessed at [gmidolo.shinyapps.io/interpolated_s_change_app](https://gmidolo.shinyapps.io/interpolated_s_change_app/). Its code is deposited in a separate GitHub repository ([gmidolo/interpolated_S_change_app](https://github.com/gmidolo/interpolated_S_change_app)).
 
