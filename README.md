@@ -91,13 +91,16 @@ Email: midolo@fzp.czu.cz
 ### Raw input data - [`input`](data/input)
 
 The EVA and ReSurveyEurope data for this project, including the species lists for each plot, are not stored in this repository. They can be only obtained by requesting access from the [European Vegetation Archive (EVA) Coordinating Board](https://euroveg.org/eva-database/) using the appropriate data request form (see [`How To Obtain Data`](https://euroveg.org/eva-database/obtaining-data)). Please reference this project's DOI ([10.58060/250x-we61](https://doi.org/10.58060/250x-we61)) in your request.
-Check the [*Metadata*](#metadata) section for more information on the raw data and the data stored in this repository.
+
+Check the **[Metadata](#metadata)** section for more information on the raw data and the data stored in this repository. 
+
+A **Data Dictionary (Codebook)** is available for both datasets in .docx format [/data/input/codebook](/data/input/codebook)
 
 The folder contains input data files used for the analyses:
 - [`input/EVA.csv.gz`](data/input/EVA.csv.gz): A .gz-compressed CSV file containing selected vegetation plots from the EVA database.
 - [`input/ReSurveyEU_clean.csv.gz`](data/input/ReSurveyEU_clean.csv.gz): A .gz-compressed CSV file with selected plots from the ReSurveyEurope dataset.
 
-EVA/ReSurveyEurope data description:
+EVA/ReSurveyEurope overview:
 
 | Column Name | Description |
 | :---------- | :----------------------------------------------------------------- |
@@ -124,7 +127,6 @@ EVA/ReSurveyEurope data description:
 | `y_mean` | Centroid latitude (in EPSG:25832) of plots observations assigned to the same resurv_id |
 | `max_dist_m` | Maximum distance (in m) between plots observations assigned to the same resurv_id |
 
-For the *Data Dictionary (Codebook)*, check the documentation in [`/data/input/codebook`](/data/input/codebook)
 
 ### Model results - [`models`](data/models) (*Not Deposited Here*)
 
@@ -203,7 +205,7 @@ Files are deposited in the Zenodo repository (DOI: [10.5281/zenodo.15836616](htt
 
 ### 6. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`6_data_cleaning`](src/6_raw_data_processing)
 
-*N.B. This part of the code is used to prepare the raw data from EVA and ReSurveyEurope. It is not directly reproducible unless a data request is made to the EVA and ReSurveyEurope governing board.*
+**N.B. This part of the code is used to prepare the raw data from EVA and ReSurveyEurope. It is not directly reproducible unless a data request is made to the EVA and ReSurveyEurope governing board.**
 
 - [`1.prepare.data.R`](src/6_raw_data_processing/1.prepare.data.R): Main script to preprocess raw data retrieved in EVA/ReSurveyEurope proj. no. 222 (DOI: [ 10.58060/250x-we61](https://doi.org/10.58060/250x-we61))
 - [`2.duplicate.search.R`](src/6_raw_data_processing/2.duplicate.search.R): Remove presumed or actual duplicate plots within and across EVA and ReSurveyEurope data (plots with the same year of sampling, geographic coordinates, and species composition)
@@ -273,7 +275,7 @@ Contains figures presented in the main manuscript and supporting information.
 | **Data harmonization** | Managed by the EVA and ReSurveyEurope curators (species abundances and nomenclature). | Same as 'raw data'. |
 | **Data processing (main) steps** | Managed by EVA and ReSurveyEurope curators. | 1\. Application of inclusion/exclusion criteria to the raw data. <br> 2. Calculation of species richness (number of unique vascular plant species) for each plot using the species list data from the raw data. |
 | **Quality control** | Conducted by data providers and EVA/ReSurveyEurope curators. | Conducted by Gabriele Midolo with help from database custodians. Included coordinate plausibility checks (manual and automated), species richness plausibility checks (manual), and duplicate removal within and between EVA and ReSurveyEurope (automated). |
-| **Processing code** | Not available. | All R scripts documenting processing steps and quality control are stored in this repository (`src/raw_data_processing`). |
+| **Processing code** | Not available. | All R scripts documenting processing steps and quality control are stored in this repository ([src/6_raw_data_processing](src/6_raw_data_processing)). |
 | **Software environment** | Varies by data provider. | R version 4.4.2. R packages for data processing: `tidyverse`, `sf`, `terra`. |
 | **Reproducibility** | Not reproducible without subset definition. | Fully reproducible for EVA-authorized users using the R code stored in this repository. |
 

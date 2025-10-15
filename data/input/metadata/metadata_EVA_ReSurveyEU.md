@@ -1,14 +1,16 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
 # Metadata for EVA and ReSurveyEurope
 
-**Date:** 2025-10-14\
+**Date:** 2025-10-15\
 **Authors:** Gabriele Midolo, on behalf of the Author Team\
 **Contact:** [gabriele.midolo\@gmail.com](mailto:gabriele.midolo@gmail.com)\
-**Persistent Identifier (Zenodo):** [10.5281/zenodo.15836616](https://doi.org/10.5281/zenodo.15836616)\
-**Accessed data:** European Vegetation Archive (EVA) and ReSurveyEurope datasets
 
-------------------------------------------------------------------------
-
-## 1. General Dataset Information
+### 1. General Dataset Information
 
 |  | **Description** |
 |-------------------------------|-----------------------------------------|
@@ -19,9 +21,8 @@
 | **Citation** | Chytrý, M., Hennekens, S. M., Jiménez‐Alfaro, B., Knollová, I., Dengler, J., Jansen, F., ... & Yamalov, S. (2016). European Vegetation Archive (EVA): an integrated database of European vegetation plots. *Applied Vegetation Science*, *19*(1), 173-180. <https://doi.org/10.1111/avsc.12191> <br> Knollová, I., Chytrý, M., Bruelheide, H., Dullinger, S., Jandt, U., Bernhardt‐Römermann, M., ... & Essl, F. (2024). ReSurveyEurope: A database of resurveyed vegetation plots in Europe. *Journal of Vegetation Science*, *35*(2), e13235. <https://doi.org/10.1111/jvs.13235> |
 | **Data curators** | [The EVA Coordinating Board and EVA Council](https://euroveg.org/eva-database/who-we-are) <br> [The ReSurveyEurope Board](https://euroveg.org/resurvey/) |
 
-------------------------------------------------------------------------
 
-## 2. Dataset Description
+### 2. Dataset Description
 
 |   | **Raw data (\*)** | **Data in the repository** |
 |-----------------|----------------------|----------------------------------|
@@ -35,9 +36,8 @@
 
 (\*) These values refer to the raw data released for project \# 222 (<https://doi.org/10.58060/250x-we61>)
 
-------------------------------------------------------------------------
 
-## 3. Access and Licensing
+### 3. Access and Licensing
 
 |   | **Raw data (\*)** | **Data in the repository** |
 |-----------------|----------------------|----------------------------------|
@@ -48,9 +48,8 @@
 
 (\*) These values refer to the raw data released for project \# 222 (<https://doi.org/10.58060/250x-we61>)
 
-------------------------------------------------------------------------
 
-## 4. Methods and Processing
+### 4. Methods and Processing
 
 |   | **Raw data (\*)** | **Data in the repository** |
 |-----------------|----------------------|----------------------------------|
@@ -59,10 +58,8 @@
 | **Data harmonization** | Managed by the EVA and ReSurveyEurope curators (species abundances and nomenclature). | Same as 'raw data'. |
 | **Data processing (main) steps** | Managed by EVA and ReSurveyEurope curators. | 1\. Application of inclusion/exclusion criteria to the raw data. <br> 2. Calculation of species richness (number of unique vascular plant species) for each plot using the species list data from the raw data. |
 | **Quality control** | Conducted by data providers and EVA/ReSurveyEurope curators. | Conducted by Gabriele Midolo with help from database custodians. Included coordinate plausibility checks (manual and automated), species richness plausibility checks (manual), and duplicate removal within and between EVA and ReSurveyEurope (automated). |
-| **Processing code** | Not available. | All R scripts documenting processing steps and quality control are stored in this repository (`src/raw_data_processing`). |
+| **Processing code** | Not available. | All R scripts documenting processing steps and quality control are stored in this repository ([src/6_raw_data_processing](src/6_raw_data_processing)). |
 | **Software environment** | Varies by data provider. | R version 4.4.2. R packages for data processing: `tidyverse`, `sf`, `terra`. |
 | **Reproducibility** | Not reproducible without subset definition. | Fully reproducible for EVA-authorized users using the R code stored in this repository. |
 
 (\*) These values refer to the raw data released for project \# 222 (<https://doi.org/10.58060/250x-we61>)
-
-------------------------------------------------------------------------
