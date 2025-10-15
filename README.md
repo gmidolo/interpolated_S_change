@@ -64,7 +64,7 @@ Petr Keil <a href="https://orcid.org/0000-0003-3017-1858" target="_blank"><img s
         * [Model performance response to spatial and temporal distance to the training data](#model-performance-response-to-spatial-and-temporal-distance-to-the-training-data)
         * [Residuals spatial autocorrelation](#residuals-spatial-autocorrelation)
     * [5. Plot main figures](#5-plot-main-figures---5_plot_figures)
-    * [6. Raw data processing (not reproducible)](#6-preprocessing-raw-eva-and-resurveyeurope-data-not-reproducible---6_data_cleaning)
+    * [6. Raw data processing (not reproducible)](#6-preprocessing-raw-eva-and-resurveyeurope-data-not-reproducible---6_raw_data_processing)
     * [Utility Functions](#utility-functions)
 * [Figures (fig folder)](#figures-fig-folder)
 * [Metadata](#metadata)
@@ -205,7 +205,7 @@ Files are deposited in the `data/models` folder of the Zenodo repository (DOI: [
 - [`plot_trends_raw_predictions_biogeoregions.R`](src/5_plot_figures/plot_trends_raw_predictions_biogeoregions.R): Interpolated *S* response to time for each habitat type and biogeographic region (Figure 3 of the main manuscript)
 - [`mapping_perc_change.R`](src/5_plot_figures/mapping_perc_change.R): Distribution maps of interpolated Δ*S* (%) for each habitat and time period (Figure 4 of the main manuscript)
 
-### 6. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`6_data_cleaning`](src/6_raw_data_processing)
+### 6. Preprocessing raw EVA and ReSurveyEurope data (not reproducible) - [`6_raw_data_processing`](src/6_raw_data_processing)
 
 **N.B. This part of the code is used to prepare the raw data from EVA and ReSurveyEurope. It is not directly reproducible unless a data request is made to the EVA and ReSurveyEurope governing board.**
 
