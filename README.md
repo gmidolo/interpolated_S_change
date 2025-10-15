@@ -64,7 +64,7 @@ Petr Keil <a href="https://orcid.org/0000-0003-3017-1858" target="_blank"><img s
         * [Model performance response to spatial and temporal distance to the training data](#model-performance-response-to-spatial-and-temporal-distance-to-the-training-data)
         * [Residuals spatial autocorrelation](#residuals-spatial-autocorrelation)
     * [5. Plot main figures](#5-plot-main-figures---5_plot_figures)
-    * [6. Raw data processing (not reproducible)](#6-preprocessing-raw-eva-and-resurveyeurope-data-(not-reproducible)---6_data_cleaning`)
+    * [6. Raw data processing (not reproducible)](#6-preprocessing-raw-eva-and-resurveyeurope-data-not-reproducible---6_data_cleaning)
     * [Utility Functions](#utility-functions)
 * [Figures (fig folder)](#figures-fig-folder)
 * [Metadata](#metadata)
@@ -92,15 +92,14 @@ Email: midolo@fzp.czu.cz
 
 The EVA and ReSurveyEurope data for this project, including the species lists for each plot, are not stored in this repository. They can be only obtained by requesting access from the [European Vegetation Archive (EVA) Coordinating Board](https://euroveg.org/eva-database/) using the appropriate data request form (see [`How To Obtain Data`](https://euroveg.org/eva-database/obtaining-data)). Please reference this project's DOI ([10.58060/250x-we61](https://doi.org/10.58060/250x-we61)) in your request.
 
-Check the **[Metadata](#metadata)** section for more information on the raw data and the data stored in this repository. 
-
-A **Data Dictionary (Codebook)** is available for both datasets in .docx format [/data/input/codebook](/data/input/codebook)
+Check the **[Metadata](#metadata)** section for more information on the raw data and the data stored in this repository. Metadata are also available in .md and .docx format: [/data/input/metadata](/data/input/metadata)
+A **Data Dictionary (Codebook)** is available in .docx format: [/data/input/codebook](/data/input/codebook).
 
 The folder contains input data files used for the analyses:
 - [`input/EVA.csv.gz`](data/input/EVA.csv.gz): A .gz-compressed CSV file containing selected vegetation plots from the EVA database.
 - [`input/ReSurveyEU_clean.csv.gz`](data/input/ReSurveyEU_clean.csv.gz): A .gz-compressed CSV file with selected plots from the ReSurveyEurope dataset.
 
-EVA/ReSurveyEurope overview:
+Overview of EVA and ReSurveyEurope data stored in this repository:
 
 | Column Name | Description |
 | :---------- | :----------------------------------------------------------------- |
@@ -222,7 +221,8 @@ Contains figures presented in the main manuscript and supporting information.
 
 ## Metadata
 
-------------------------------------------------------------------------
+Metadata are also available in .md and .docx format: [/data/input/metadata](/data/input/metadata).
+A **Data Dictionary (Codebook)** is available in .docx format: [/data/input/codebook](/data/input/codebook).
 
 ### 1. General Dataset Information
 

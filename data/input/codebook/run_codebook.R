@@ -217,7 +217,7 @@ dat <- dat %>%
 # Get the codebook
 codebook_doc <- codebook(
   df = dat,
-  title = 'Data Dictionary (Codebook) for the EVA and ReSurveyEurope Combined Dataset',
+  title = 'Data Dictionary (Codebook) for the EVA and ReSurveyEurope data',
   subtitle = 'Six decades of losses and gains in alpha diversity of European plant communities by Midolo, G., Clark, A. T., Chytrý, M., Essl, F., Dullinger, S., Jandt, U., ... & Keil, P. (2025). ',
   description = 'This document provides a detailed data dictionary for the combined EVA and ReSurveyEurope dataset, including variable descriptions, data sources, and original names in the raw data.'
 )
