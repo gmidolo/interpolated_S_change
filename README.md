@@ -1,8 +1,8 @@
-# Six decades of losses and gains in alpha diversity of European plant communities
+# Six Decades of Losses and Gains in Alpha Diversity of European Plant Communities
 
 ## Data and R code repository
 
-This repository (<https://github.com/gmidolo/interpolated_S_change>) contains the **data** and **R code** for our study, allowing for the reproduction of the main analyses and supplementary materials.
+This repository (<https://github.com/gmidolo/interpolated_S_change>) contains the **data** and **R code** for [our study](#citation), allowing for the reproduction of the main analyses and supplementary materials.
 
 We interpolated spatiotemporal changes in vascular plant species richness using a new method based on machine learning that does not require temporal replication at sites. Using 698,692 one-time survey vegetation plots from the [European Vegetation Archive](https://euroveg.org/eva-database/), we estimated trends in vascular plant alpha diversity across Europe and validated our approach against 22,852 independent time series from [ReSurveyEurope](https://euroveg.org/resurvey/). 
 
@@ -292,4 +292,4 @@ A **Data Dictionary (Codebook)** is available in .docx format: [/data/input/code
 
 ## Citation
 
-*This repository is not linked to any publication yet.*
+Midolo, G., Clark, A. T., Chytrý, M., Essl, F., Dullinger, S., Jandt, U., ... & Keil, P. (2025). Six decades of losses and gains in alpha diversity of European plant communities. *Ecology Letters*, *28*(11), e70248. <https://doi.org/10.1111/ele.70248>
